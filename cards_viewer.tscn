@@ -1,0 +1,64 @@
+[gd_scene load_steps=2 format=3 uid="uid://c28yyjylfx1cw"]
+
+[ext_resource type="Script" path="res://cards_viewer.gd" id="1_k5kn1"]
+
+[node name="CardsViewer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k5kn1")
+
+[node name="Background" type="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.196078, 0.243137, 0.352941, 1)
+
+[node name="Title" type="Label"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 20.0
+offset_bottom = 50.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "Biblioteca de Cartas"
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -50.0
+offset_right = 120.0
+offset_bottom = -20.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 14
+text = "Voltar"
+
+[node name="CardsContainer" type="ScrollContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 60.0
+offset_right = -10.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 5

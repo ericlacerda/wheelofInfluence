@@ -1,0 +1,342 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://simple_menu.gd" id="1_nyr1s"]
+[ext_resource type="Texture2D" path="res://Image/menu/Menu.png" id="2_4wcme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5mrkw"]
+bg_color = Color(0.121569, 0.172549, 0.270588, 0.752941)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.243137)
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k8e0j"]
+bg_color = Color(0.121569, 0.172549, 0.270588, 0.501961)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.243137)
+shadow_size = 5
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nyr1s")
+
+[node name="BackgroundTexture" type="TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_4wcme")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TitlePanel" type="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 90.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5mrkw")
+
+[node name="TitleLabel" type="Label"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 36
+text = "Wheel of Influence"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MenuPanel" type="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -120.0
+offset_right = 125.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_k8e0j")
+
+[node name="VBoxContainer" type="VBoxContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = -15.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="StartButton" type="Button"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Iniciar"
+
+[node name="ContinueButton" type="Button"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Continuar"
+
+[node name="AudioButton" type="Button"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Áudio"
+
+[node name="CardsButton" type="Button"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Biblioteca de Cartas"
+
+[node name="CreditsButton" type="Button"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Créditos"
+
+[node name="QuitButton" type="Button"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Sair"
+
+[node name="Version" type="Label"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = -25.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 10
+text = "Versão 1.0.0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="AudioContainer" type="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AudioPanel" type="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5mrkw")
+
+[node name="VBoxContainer" type="VBoxContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Configurações de Áudio"
+horizontal_alignment = 1
+
+[node name="MasterVolumeContainer" type="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Label" type="Label"]
+layout_mode = 2
+text = "Volume Principal"
+
+[node name="MasterSlider" type="HSlider"]
+layout_mode = 2
+min_value = -50.0
+max_value = 0.0
+step = 0.1
+value = -10.0
+
+[node name="MusicVolumeContainer" type="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Label" type="Label"]
+layout_mode = 2
+text = "Volume da Música"
+
+[node name="MusicSlider" type="HSlider"]
+layout_mode = 2
+min_value = -50.0
+max_value = 0.0
+step = 0.1
+value = -15.0
+
+[node name="SFXVolumeContainer" type="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Label" type="Label"]
+layout_mode = 2
+text = "Volume dos Efeitos"
+
+[node name="SFXSlider" type="HSlider"]
+layout_mode = 2
+min_value = -50.0
+max_value = 0.0
+step = 0.1
+value = -10.0
+
+[node name="MuteContainer" type="HBoxContainer"]
+layout_mode = 2
+
+[node name="MuteCheckBox" type="CheckBox"]
+layout_mode = 2
+text = "Mudo"
+
+[node name="Spacer" type="Control"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MuteAllButton" type="Button"]
+layout_mode = 2
+text = "Mutar Tudo"
+
+[node name="ResumeContainer" type="HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+alignment = 1
+
+[node name="BackButton" type="Button"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Voltar"
+
+[node name="CreditsContainer" type="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CreditsPanel" type="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5mrkw")
+
+[node name="VBoxContainer" type="VBoxContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="TitleLabel" type="Label"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Créditos"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CreditsText" type="RichTextLabel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+theme_override_font_sizes/bold_font_size = 18
+theme_override_font_sizes/italics_font_size = 16
+bbcode_enabled = true
+text = "[center][b]Wheel of Influence[/b][/center]
+
+[b]Desenvolvimento:[/b]
+Programação: Nome do Programador
+Design de Jogo: Nome do Designer
+Arte: Nome do Artista
+
+[b]Música:[/b]
+Menu: Music\\Tema\\Menu.mp3
+Jogo: MusicaFundo1.mp3
+
+[b]Agradecimentos Especiais:[/b]
+Godot Engine - Motor de jogo utilizado
+Todos os testadores que ajudaram no desenvolvimento
+
+© 2023 Todos os direitos reservados"
+
+[node name="BackButtonContainer" type="HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="BackButton" type="Button"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Voltar" 

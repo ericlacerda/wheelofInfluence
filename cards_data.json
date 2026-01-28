@@ -1,0 +1,196 @@
+{
+  "cards": [
+	{
+	  "id": "cavaleiro",
+	  "title": "Cavaleiro",
+	  "attack": 6,
+	  "defense": 7,
+	  "description": "Um guerreiro nobre montado a cavalo. Grande defesa contra ataques frontais.",
+	  "image": "frame_0.png"
+	},
+	{
+	  "id": "arqueiro",
+	  "title": "Arqueiro",
+	  "attack": 7,
+	  "defense": 3,
+	  "description": "Atira flechas com precisão em alvos distantes. Ataque forte, defesa baixa.",
+	  "image": "frame_1.png"
+	},
+	{
+	  "id": "mago",
+	  "title": "Mago",
+	  "attack": 8,
+	  "defense": 2,
+	  "description": "Conjura magias poderosas para destruir seus inimigos. Alto ataque, baixa defesa.",
+	  "image": "frame_2.png"
+	},
+	{
+	  "id": "guerreiro",
+	  "title": "Guerreiro",
+	  "attack": 5,
+	  "defense": 5,
+	  "description": "Combatente equilibrado. Igualmente bom em atacar e defender.",
+	  "image": "frame_3.png"
+	},
+	{
+	  "id": "assassino",
+	  "title": "Assassino",
+	  "attack": 9,
+	  "defense": 1,
+	  "description": "Especialista em ataques furtivos. Ataque muito alto, defesa muito baixa.",
+	  "image": "frame_4.png"
+	},
+	{
+	  "id": "paladino",
+	  "title": "Paladino",
+	  "attack": 4,
+	  "defense": 8,
+	  "description": "Protege seus aliados com honra e fé. Defesa muito alta, ataque moderado.",
+	  "image": "frame_5.png"
+	},
+	{
+	  "id": "druida",
+	  "title": "Druida",
+	  "attack": 5,
+	  "defense": 4,
+	  "description": "Usa a força da natureza para curar e atacar. Habilidades versáteis.",
+	  "image": "frame_6.png"
+	},
+	{
+	  "id": "barbaro",
+	  "title": "Bárbaro",
+	  "attack": 7,
+	  "defense": 4,
+	  "description": "Entra em fúria durante o combate. Alto dano, resistência moderada.",
+	  "image": "frame_7.png"
+	},
+	{
+	  "id": "ninja",
+	  "title": "Ninja",
+	  "attack": 6,
+	  "defense": 3,
+	  "description": "Move-se rapidamente no campo de batalha. Especialista em ataques surpresa.",
+	  "image": "frame_8.png"
+	},
+	{
+	  "id": "xama",
+	  "title": "Xamã",
+	  "attack": 3,
+	  "defense": 6,
+	  "description": "Convoca espíritos para ajudá-lo. Defesa alta, ataque baixo.",
+	  "image": "frame_9.png"
+	},
+	{
+	  "id": "necromante",
+	  "title": "Necromante",
+	  "attack": 7,
+	  "defense": 3,
+	  "description": "Controla os mortos e drena a vida dos vivos.",
+	  "image": "frame_10.png"
+	},
+	{
+	  "id": "clerigo",
+	  "title": "Clérigo",
+	  "attack": 2,
+	  "defense": 8,
+	  "description": "Cura aliados e repele o mal com poder divino.",
+	  "image": "frame_11.png"
+	},
+	{
+	  "id": "ladrao",
+	  "title": "Ladrão",
+	  "attack": 4,
+	  "defense": 4,
+	  "description": "Rouba itens e se move nas sombras com destreza.",
+	  "image": "frame_12.png"
+	},
+	{
+	  "id": "berserker",
+	  "title": "Berserker",
+	  "attack": 9,
+	  "defense": 1,
+	  "description": "Guerreiro furioso que sacrifica defesa por poder de ataque máximo.",
+	  "image": "frame_13.png"
+	},
+	{
+	  "id": "monge",
+	  "title": "Monge",
+	  "attack": 5,
+	  "defense": 6,
+	  "description": "Disciplina e treinamento rigidez resultam em golpes precisos.",
+	  "image": "frame_14.png"
+	},
+	{
+	  "id": "elementalista",
+	  "title": "Elementalista",
+	  "attack": 8,
+	  "defense": 3,
+	  "description": "Controla os elementos da natureza para destruir seus inimigos.",
+	  "image": "frame_15.png"
+	},
+	{
+	  "id": "cacador",
+	  "title": "Caçador",
+	  "attack": 6,
+	  "defense": 4,
+	  "description": "Rastreador habilidoso capaz de encontrar qualquer presa.",
+	  "image": "frame_16.png"
+	},
+	{
+	  "id": "espadachim",
+	  "title": "Espadachim",
+	  "attack": 7,
+	  "defense": 5,
+	  "description": "Mestre na arte da espada, com golpes rápidos e precisos.",
+	  "image": "frame_17.png"
+	},
+	{
+	  "id": "alquimista",
+	  "title": "Alquimista",
+	  "attack": 4,
+	  "defense": 5,
+	  "description": "Mistura poções e elixires com efeitos surpreendentes.",
+	  "image": "frame_18.png"
+	},
+	{
+	  "id": "bardo",
+	  "title": "Bardo",
+	  "attack": 3,
+	  "defense": 4,
+	  "description": "Usa música para inspirar aliados e confundir inimigos.",
+	  "image": "frame_19.png"
+	},
+	{
+	  "id": "gladiador",
+	  "title": "Gladiador",
+	  "attack": 6,
+	  "defense": 6,
+	  "description": "Lutador de arena treinado para entreter e sobreviver.",
+	  "image": "frame_20.png"
+	},
+	{
+	  "id": "samurai",
+	  "title": "Samurai",
+	  "attack": 8,
+	  "defense": 6,
+	  "description": "Guerreiro honrado com técnica impecável e lealdade inabalável.",
+	  "image": "frame_21.png"
+	},
+	{
+	  "id": "bruxo",
+	  "title": "Bruxo",
+	  "attack": 7,
+	  "defense": 2,
+	  "description": "Fez pactos com entidades poderosas em troca de poder.",
+	  "image": "frame_22.png"
+	},
+	{
+	  "id": "lanceiro",
+	  "title": "Lanceiro",
+	  "attack": 5,
+	  "defense": 6,
+	  "description": "Especialista em ataques de longo alcance com sua lança.",
+	  "image": "frame_23.png"
+	}
+  ]
+} 

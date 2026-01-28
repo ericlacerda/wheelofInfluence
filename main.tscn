@@ -1,0 +1,182 @@
+[gd_scene load_steps=4 format=3 uid="uid://caarbmhsdmxcf"]
+
+[ext_resource type="Script" uid="uid://vrpqy4dma56" path="res://main.gd" id="1"]
+[ext_resource type="Script" uid="uid://djwfy4hc453bi" path="res://distribution_panel.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://r1pqgjf0kunk" path="res://Image/Campo/traditional_Japanese.jpg" id="3_h2yge"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1")
+
+[node name="RegionsContainer" type="Node2D" parent="."]
+position = Vector2(320, 210)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScoresPanel" type="Panel" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 60.0
+grow_horizontal = 2
+
+[node name="PlayerOneLabel" type="Label" parent="CanvasLayer/UI/ScoresPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 15.0
+offset_top = -18.0
+offset_right = 95.0
+offset_bottom = 18.0
+grow_vertical = 2
+text = "Jogador 1:"
+vertical_alignment = 1
+
+[node name="PlayerOneScore" type="Label" parent="CanvasLayer/UI/ScoresPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 100.0
+offset_top = -18.0
+offset_right = 130.0
+offset_bottom = 18.0
+grow_vertical = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentPlayerLabel" type="Label" parent="CanvasLayer/UI/ScoresPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -18.0
+offset_right = 100.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Turno do Jogador 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerTwoLabel" type="Label" parent="CanvasLayer/UI/ScoresPanel"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -95.0
+offset_top = -18.0
+offset_right = -15.0
+offset_bottom = 18.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "Jogador 2:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerTwoScore" type="Label" parent="CanvasLayer/UI/ScoresPanel"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = -18.0
+offset_right = -100.0
+offset_bottom = 18.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DistributionPanel" type="Panel" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -160.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("2")
+
+[node name="Title" type="Label" parent="CanvasLayer/UI/DistributionPanel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 8.0
+offset_bottom = 28.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 16
+text = "Selecione Unidades para Distribuir"
+horizontal_alignment = 1
+
+[node name="Instructions" type="Label" parent="CanvasLayer/UI/DistributionPanel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 30.0
+offset_bottom = 70.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+text = "TODAS as cartas serão distribuídas!
+Clique nas cartas para definir a ORDEM de distribuição.
+As cartas serão distribuídas nas regiões no sentido anti-horário."
+horizontal_alignment = 1
+
+[node name="UnitsContainer" type="Node2D" parent="CanvasLayer/UI/DistributionPanel"]
+position = Vector2(320, 85)
+
+[node name="CancelButton" type="Button" parent="CanvasLayer/UI/DistributionPanel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = -35.0
+offset_right = 110.0
+offset_bottom = -10.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 14
+text = "Cancelar"
+
+[node name="DistributeButton" type="Button" parent="CanvasLayer/UI/DistributionPanel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_top = -35.0
+offset_right = -15.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 14
+text = "Distribuir Todas"
+
+[node name="TraditionalJapanese" type="Sprite2D" parent="."]
+position = Vector2(313, 248)
+scale = Vector2(0.625651, 0.625651)
+texture = ExtResource("3_h2yge")

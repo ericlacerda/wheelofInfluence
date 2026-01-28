@@ -1,0 +1,91 @@
+[gd_scene load_steps=3 format=3 uid="uid://3qxnwp1u2jdr"]
+
+[ext_resource type="Script" path="res://confirmation_dialog.gd" id="1_lq0nk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pn2wq"]
+bg_color = Color(0.156863, 0.196078, 0.25098, 0.901961)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.27451, 0.380392, 0.545098, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.239216)
+shadow_size = 5
+
+[node name="ConfirmationDialog" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lq0nk")
+
+[node name="DarkOverlay" type="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.588235)
+
+[node name="Panel" type="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -80.0
+offset_right = 150.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pn2wq")
+
+[node name="Message" type="Label"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 20.0
+offset_bottom = 80.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 14
+text = "Tem certeza que deseja continuar?"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ButtonContainer" type="HBoxContainer"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -130.0
+offset_top = -50.0
+offset_right = 130.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="ConfirmButton" type="Button"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Confirmar"
+
+[node name="CancelButton" type="Button"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Cancelar" 

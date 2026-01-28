@@ -1,0 +1,192 @@
+[gd_scene load_steps=7 format=3 uid="uid://cgr2j1l3vnluu"]
+
+[ext_resource type="Script" uid="uid://ddfhoun405a6f" path="res://unit.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bxpf0q4iah6db" path="res://Image/Cards/Cards/frame_0.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://cxkhfw4v6j0ca" path="res://Image/Cards/Cards/Front.png" id="2_davkp"]
+[ext_resource type="FontFile" uid="uid://bsbwqpxmuumr8" path="res://Image/Font/dogicapixel.ttf" id="4_5wnup"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5wnup"]
+font = ExtResource("4_5wnup")
+font_size = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_1sk4h"]
+font = ExtResource("4_5wnup")
+font_size = 5
+font_color = Color(0.407843, 0.0784314, 0.0431373, 1)
+outline_size = 1
+outline_color = Color(0.821911, 2.62313e-06, 7.70092e-07, 1)
+
+[node name="Unit" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Card" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -52.5
+offset_right = 35.0
+offset_bottom = 52.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+metadata/_edit_group_ = true
+
+[node name="Border" type="ColorRect" parent="Card"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.0509804, 0.0509804, 0.0509804, 1)
+
+[node name="Front" type="Sprite2D" parent="Card"]
+position = Vector2(35, 52.5)
+texture = ExtResource("2_davkp")
+
+[node name="AttackBox" type="ColorRect" parent="Card"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 2.5
+offset_right = 15.0
+offset_bottom = 12.5
+mouse_filter = 2
+color = Color(0.85098, 0.168627, 0.168627, 1)
+
+[node name="AttackLabel" type="Label" parent="Card/AttackBox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
+text = "5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleLabel" type="Label" parent="Card"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 15.0
+offset_right = 72.0
+offset_bottom = 16.0
+scale = Vector2(0.719999, 1)
+theme_override_font_sizes/font_size = 9
+text = "Cavaleiro"
+label_settings = SubResource("LabelSettings_5wnup")
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 171
+clip_text = true
+
+[node name="DefenseBox" type="ColorRect" parent="Card"]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 2.5
+offset_right = 66.0
+offset_bottom = 12.5
+mouse_filter = 2
+color = Color(0.0588235, 0.482353, 0.65098, 1)
+
+[node name="DefenseLabel" type="Label" parent="Card/DefenseBox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatLabels" type="HBoxContainer" parent="Card"]
+modulate = Color(0, 0, 0, 0.431373)
+layout_mode = 0
+offset_top = 12.5
+offset_right = 82.0
+offset_bottom = 21.5
+scale = Vector2(0.863868, 0.758928)
+mouse_filter = 2
+
+[node name="AtkLabel" type="Label" parent="Card/StatLabels"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 6
+text = "ATK"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="Card/StatLabels"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="DefLabel" type="Label" parent="Card/StatLabels"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 6
+text = "DEF"
+horizontal_alignment = 1
+
+[node name="UnitTexture" type="TextureRect" parent="Card"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.0
+offset_top = -35.5
+offset_right = 26.0
+offset_bottom = 36.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DescriptionLabel" type="Label" parent="Card"]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = -35.5
+offset_right = -3.0
+offset_bottom = 31.5
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.880001, 0.479999)
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 7
+text = "Esta unidade ataca com força e precisão, destruindo seus inimigos."
+label_settings = SubResource("LabelSettings_1sk4h")
+autowrap_mode = 1
+
+[node name="OrderLabel" type="Label" parent="Card"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -19.0
+offset_top = 4.0
+offset_right = -5.0
+offset_bottom = 20.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
