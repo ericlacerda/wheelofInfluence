@@ -1,0 +1,58 @@
+name: Publish to itch.io
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  GODOT_VERSION: 4.6
+  EXPORT_NAME: wheelofinfluence
+  PROJECT_PATH: .
+
+jobs:
+  export_and_deploy:
+    name: Export and Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Build Directories
+        run: mkdir -p builds/web
+
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v1
+        with:
+          version: 4.6.0
+          use-dotnet: false
+
+      - name: Install Templates
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates/4.6.stable
+          wget https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_export_templates.tpz
+          unzip Godot_v4.6-stable_export_templates.tpz
+          mv templates/* ~/.local/share/godot/export_templates/4.6.stable/
+
+      - name: Export Game
+        run: |
+          godot --headless --export-release "Web" builds/web/index.html
+
+      - name: Zip Exports
+        run: |
+          mkdir dist
+          cd builds/web
+          zip -r ../../dist/index.zip .
+
+      - name: Deploy to itch.io
+        uses: manleydev/butler-publish-itchio-action@master
+        if: github.ref == 'refs/heads/main'
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+          CHANNEL: web
+          ITCH_GAME: wheelofinfluence
+          ITCH_USER: ericlacerda
+          PACKAGE: dist/index.zip
