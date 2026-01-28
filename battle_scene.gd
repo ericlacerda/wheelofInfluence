@@ -2,407 +2,191 @@ extends CanvasLayer
 
 signal battle_finished(result)
 
-# Referências e configurações
-var attacker_unit = null
-var defender_unit = null
+# Dados da batalha
+var attacker_data = null
+var defender_data = null
 var attacker_wins = false
 var region_id = -1
-var unit_scene = preload("res://unit.tscn")
 
-# Configurações de som
-var battle_start_sound_played = false
-var result_sound_played = false
-
-# Configurações do efeito de destaque (highlight)
-var highlight_effect_active = false
-var highlight_timer = 0.0
-var highlight_duration = 2.0  # Duração total do efeito em segundos
-var highlight_target = null   # Referência à carta defensora que será destacada
-var highlight_color = Color("#00FFFF")  # Azul ciano para destacar
-
-# Configurações do efeito de queima (burn)
-var burn_effect_active = false
-var burn_timer = 0.0
-var burn_duration = 2.0  # Duração total do efeito em segundos
-var burn_target = null   # Referência à carta defensora que será queimada
-var burn_color = Color("#FF4500")  # Vermelho-laranja para o efeito de queima
-var burn_particles = null  # Armazenará as partículas de fogo se existirem
-
-# A escala base é definida dinamicamente na função setup_battle
-var card_battle_scale = Vector2(2.2, 2.2)  # Valor padrão
+# Referências Visuais
+@onready var left_panel = $LeftPanel
+@onready var right_panel = $RightPanel
+@onready var anim_player = $AnimationPlayer
+@onready var result_label = $ResultLabel
 
 func _ready():
-	# Inicializar cena de batalha
 	visible = false
-	layer = 10  # Valor alto para garantir que fique sobre todos os outros elementos
 
-func _process(delta):
-	# Processar o efeito de destaque se estiver ativo
-	if highlight_effect_active and highlight_target:
-		process_highlight_effect(delta)
-	
-	# Processar o efeito de queima se estiver ativo
-	if burn_effect_active and burn_target:
-		process_burn_effect(delta)
-
-# Processar o efeito de destaque (highlight) 
-func process_highlight_effect(delta):
-	highlight_timer += delta
-	
-	# Verificar se já terminou o tempo do efeito
-	if highlight_timer > highlight_duration:
-		highlight_effect_active = false
-		
-		# Restaurar a aparência normal da carta
-		var unit_instance = get_unit_instance(highlight_target)
-		if unit_instance:
-			unit_instance.modulate = Color(1, 1, 1, 1)
-		
-		return
-	
-	# Calcular progresso do efeito (0.0 a 1.0)
-	var progress = min(highlight_timer / highlight_duration, 1.0)
-	
-	# Obter a instância da carta
-	var unit_instance = get_unit_instance(highlight_target)
-	if unit_instance:
-		# Efeitos cintilantes azul-ciano para vitória
-		
-		# Base de "pulsação": velocidade rápida para efeito cintilante
-		var pulse_fast = sin(Time.get_ticks_msec() * 0.02) * 0.4 + 0.6  # Pulsação rápida
-		var pulse_slow = sin(Time.get_ticks_msec() * 0.005) * 0.3 + 0.7  # Pulsação lenta
-		
-		# Combinar pulsações para efeito mais complexo
-		var pulse_combined = pulse_fast * pulse_slow
-		
-		# Efeito de brilho azul-ciano que varia na intensidade
-		var blue_intensity = 1.0 + 0.8 * pulse_combined  # Brilho azul mais intenso
-		var green_intensity = 1.0 + 0.6 * pulse_combined  # Turquesa/ciano
-		var red_intensity = 0.7  # Mantém um pouco de vermelho para não ficar completamente azul
-		
-		# Aplicar modulação de cor
-		unit_instance.modulate = Color(
-			red_intensity,
-			green_intensity, 
-			blue_intensity,
-			1.0
-		)
-		
-		# Adicionar escala pulsante sutil
-		var scale_pulse = 1.0 + 0.05 * pulse_combined
-		unit_instance.scale = card_battle_scale * scale_pulse
-		
-		if int(highlight_timer * 5) % 5 == 0:  # Log a cada 0.2 segundos
-			print("Efeito de destaque: ", progress * 100, "%")
-
-# Processar o efeito de queima (burn) com modulação de cor e transparência
-func process_burn_effect(delta):
-	burn_timer += delta
-	
-	# Verificar se já terminou o tempo do efeito
-	if burn_timer > burn_duration:
-		burn_effect_active = false
-		
-		# Restaurar a aparência normal da carta
-		var unit_instance = get_unit_instance(burn_target)
-		if unit_instance:
-			unit_instance.modulate = Color(1, 1, 1, 1)
-			unit_instance.scale = card_battle_scale  # Restaurar escala original
-		
-		print("Efeito de queima finalizado")
-		return
-	
-	# Calcular progresso do efeito (0.0 a 1.0)
-	var progress = min(burn_timer / burn_duration, 1.0)
-	
-	# Obter a instância da carta
-	var unit_instance = get_unit_instance(burn_target)
-	if unit_instance:
-		# Intensidade da pulsação para efeito de fogo
-		var pulse_intensity = sin(Time.get_ticks_msec() * 0.015) * 0.3 + 0.7  # Varia entre 0.4 e 1.0
-		
-		# Efeito de queimadura com vermelho-laranja pulsante
-		var red_intensity = 1.0 + 0.5 * pulse_intensity;
-		var green_intensity = 0.7 - 0.4 * progress * pulse_intensity;
-		var blue_intensity = 0.5 - 0.5 * progress * pulse_intensity;
-		
-		# Transparência gradual (a carta vai sumindo conforme queima)
-		var alpha = 1.0;
-		if progress > 0.5:
-			alpha = lerp(1.0, 0.0, (progress - 0.5) * 2.0);
-		
-		# Aplicar o efeito visual
-		unit_instance.modulate = Color(red_intensity, green_intensity, blue_intensity, alpha);
-		
-		if int(burn_timer * 10) % 10 == 0:  # Log a cada 0.1 segundos
-			print("Efeito de queima: ", progress * 100, "% - Alpha: ", alpha);
-
-# Função auxiliar para obter a instância da carta dentro de um nó
-func get_unit_instance(node):
-	if not node:
-		return null
-		
-	for child in node.get_children():
-		if child is Node2D:
-			return child
-	
-	return null
-
-# Configurar a cena de batalha com as unidades envolvidas
-func setup_battle(attacker, defender, region):
-	# Armazenar dados necessários
-	attacker_unit = attacker
-	defender_unit = defender
+func setup_battle(attacker, defender, region, _from_pos = Vector2.ZERO):
+	attacker_data = attacker
+	defender_data = defender
 	region_id = region
 	attacker_wins = attacker.attack > defender.defense
 	
-	# Reiniciar estado
-	battle_start_sound_played = false
-	result_sound_played = false
-	highlight_effect_active = false
-	highlight_timer = 0.0
-	burn_effect_active = false
-	burn_timer = 0.0
+	# Configurar Atacante (Esquerda)
+	setup_combatant_panel($LeftPanel, attacker, true)
 	
-	# Configurar posições iniciais das cartas
-	$AttackerCard.position = Vector2(160, 240)
-	$DefenderCard.position = Vector2(480, 240)
+	# Configurar Defensor (Direita)
+	setup_combatant_panel($RightPanel, defender, false)
 	
-	# Criar cópias visuais das cartas
-	setup_card(attacker, $AttackerCard, true)
-	setup_card(defender, $DefenderCard, false)
-	call_deferred("apply_battle_scale")
+	# Restaurar estado inicial
+	result_label.visible = false
+	$Background.modulate.a = 0.0
+	$VSLabel.modulate.a = 0.0
+	$FlashOverlay.color.a = 0.0
 	
-	# Configurar textos
-	$AttackerStats.text = "ATK: " + str(attacker.attack)
-	$DefenderStats.text = "DEF: " + str(defender.defense)
+	# Iniciar
+	visible = true
+	start_battle_sequence_code()
+
+# Configura visual do painel de combatente
+func setup_combatant_panel(panel, unit, is_attacker):
+	var portrait = panel.get_node("PortraitFrame/Portrait")
+	var name_label = panel.get_node("InfoPanel/NameLabel")
+	var stats_label = panel.get_node("InfoPanel/StatsLabel")
 	
-	# Configurar o resultado da batalha
-	if attacker_wins:
-		$BattleResult.text = "Vitória do Atacante!"
-		$BattleResult.add_theme_color_override("font_color", Color(0, 1, 0, 1))
+	name_label.text = unit.title
+	
+	# Carregar Imagem
+	var img_path = "res://Image/Cards/" + unit.image
+	if not ResourceLoader.exists(img_path):
+		img_path = "res://Image/Cards/Cards/" + unit.image # Fallback para pasta aninhada
+	
+	if ResourceLoader.exists(img_path):
+		portrait.texture = load(img_path)
 	else:
-		$BattleResult.text = "Ataque Repelido!"
-		$BattleResult.add_theme_color_override("font_color", Color(1, 0.5, 0, 1))
+		portrait.texture = load("res://icon.svg")
+		
+	# Estatísticas
+	if is_attacker:
+		stats_label.text = "ATK: " + str(int(unit.attack))
+		stats_label.add_theme_color_override("font_color", Color(1, 0.4, 0.4)) # Vermelho suave
+	else:
+		stats_label.text = "DEF: " + str(int(unit.defense))
+		stats_label.add_theme_color_override("font_color", Color(0.4, 0.6, 1)) # Azul suave
+
+# Sequência de Batalha via Código (Mais robusta que AnimationPlayer para UI dinâmica)
+func start_battle_sequence_code():
+	var viewport_size = get_viewport().get_visible_rect().size
+	var panel_width = 220
 	
-	# Garantir estado inicial dos elementos visuais
-	$VersusLabel.modulate = Color(1, 0.874, 0, 0)
-	$BattleResult.modulate = Color(1, 1, 1, 0)
-	$AttackEffect.modulate = Color(1, 1, 1, 0)
+	# Posições Iniciais (Fora da tela)
+	left_panel.position.x = -panel_width
+	right_panel.position.x = viewport_size.x + panel_width
 	
-	# Centralizar todos os elementos na tela
-	center_battle_elements()
+	# Posições Finais (Separadas: 25% e 75%)
+	var left_final_x = (viewport_size.x * 0.25) - (panel_width / 2.0)
+	var right_final_x = (viewport_size.x * 0.75) - (panel_width / 2.0)
 	
-	# Tocar som de início de batalha
+	# Centralizar Verticalmente
+	var panel_height = 320
+	var center_y = (viewport_size.y - panel_height) / 2.0
+	left_panel.position.y = center_y
+	right_panel.position.y = center_y
+	
+	# Ajustar tamanho dos painéis (importante caso o Tscn tenha tamanho diferente)
+	left_panel.size = Vector2(panel_width, panel_height)
+	right_panel.size = Vector2(panel_width, panel_height)
+	
 	if AudioManager:
 		AudioManager.play_battle_start_sound()
-		battle_start_sound_played = true
-	
-	# Mostrar cena e iniciar animação
-	visible = true
-	$AnimationPlayer.stop()
-	
-	# Conectar o sinal para detectar passos da animação (se ainda não conectado)
-	if not $AnimationPlayer.is_connected("animation_step", Callable(self, "_on_animation_step")):
-		$AnimationPlayer.connect("animation_step", Callable(self, "_on_animation_step"))
-	
-	$AnimationPlayer.play("battle_animation")
-	print("Iniciando animação de batalha entre cartas")
-
-# Função para monitorar os passos da animação e iniciar o efeito após o hit
-func _on_animation_step(anim_name, step_time):
-	# O efeito de hit ocorre aproximadamente no tempo 1.6 na animação
-	if anim_name == "battle_animation" and step_time >= 1.6 and step_time < 1.7:
-		print("Momento ideal para iniciar efeito após hit: ", step_time)
 		
-		# Decidir qual efeito aplicar com base no resultado da batalha
-		if not attacker_wins:
-			# Defesa ganhou - aplicar efeito de destaque na carta defensora
-			start_highlight_effect()
-		else:
-			# Defesa perdeu - aplicar efeito de queima na carta defensora
-			start_burn_effect()
-			
-		play_result_sounds()
+	# --- FASE 1: ENTRADA (0.0s - 0.5s) ---
+	var tween_intro = create_tween().set_parallel(true).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+	tween_intro.tween_property($Background, "modulate:a", 1.0, 0.5)
+	tween_intro.tween_property(left_panel, "position:x", left_final_x, 0.5)
+	tween_intro.tween_property(right_panel, "position:x", right_final_x, 0.5)
+	
+	# VS Label aparece com delay e efeito de impacto
+	$VSLabel.scale = Vector2(2.5, 2.5) # Começa grande
+	
+	var tween_vs = create_tween().set_parallel(true)
+	tween_vs.tween_interval(0.3)
+	tween_vs.tween_property($VSLabel, "modulate:a", 1.0, 0.2).set_delay(0.3)
+	tween_vs.tween_property($VSLabel, "scale", Vector2(1.0, 1.0), 0.6).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT).set_delay(0.3)
+	
+	await tween_intro.finished
+	
+	# --- FASE 2: TENSÃO (0.5s - 2.0s) ---
+	# Aguarda leitura dos stats
+	await get_tree().create_timer(1.5).timeout
+	
+	# --- FASE 3: IMPACTO (2.0s) ---
+	# Flash antes do impacto
+	var tween_flash = create_tween()
+	tween_flash.tween_property($FlashOverlay, "color:a", 0.8, 0.1)
+	tween_flash.tween_callback(Callable(self, "trigger_impact_visuals"))
+	tween_flash.tween_property($FlashOverlay, "color:a", 0.0, 0.3)
+	
+	await tween_flash.finished
+	
+	# --- FASE 4: FIM (3.0s - 4.0s) ---
+	await get_tree().create_timer(1.0).timeout
+	animation_finished()
 
-# Tocar sons de resultado da batalha
-func play_result_sounds():
-	if result_sound_played or not AudioManager:
-		return
-		
+# (Depreciado) Mantido apenas para evitar erros se sobrar referência no Tscn
+func start_battle_sequence():
+	start_battle_sequence_code()
+
+# Chamado pela AnimationPlayer no momento do impacto (aprox 2.0s)
+func trigger_impact_visuals():
+	print("IMPACTO!")
+	
+	# Screen Shake
+	shake_screen()
+	
+	# Esconder VS Label para evitar sobreposição
+	var tween_hide_vs = create_tween()
+	tween_hide_vs.tween_property($VSLabel, "modulate:a", 0.0, 0.2)
+	
+	# Mostrar Resultado
+	result_label.visible = true
 	if attacker_wins:
-		# O atacante vence
-		AudioManager.play_card_sound(attacker_unit, true)
-		AudioManager.play_card_sound(defender_unit, false)
-	else:
-		# O defensor vence
-		AudioManager.play_card_sound(defender_unit, true)
-		AudioManager.play_card_sound(attacker_unit, false)
-	
-	result_sound_played = true
-
-# Chamado quando a animação terminar
-func animation_finished():
-	print("Animação de batalha concluída, resultado:", "Vitória" if attacker_wins else "Derrota")
-	
-	# Se por algum motivo os efeitos ainda não foram iniciados, inicie-os agora
-	if not highlight_effect_active and not attacker_wins:
-		start_highlight_effect()
-		play_result_sounds()
-	elif not burn_effect_active and attacker_wins:
-		start_burn_effect()
-		play_result_sounds()
-	
-	# Aguardar a conclusão do efeito
-	var effect_duration = max(highlight_duration, burn_duration)
-	await get_tree().create_timer(effect_duration).timeout
-	
-	# Limpar efeitos
-	cleanup_effects()
-	
-	# Emitir sinal de que a batalha terminou
-	emit_signal("battle_finished", attacker_wins)
-	
-	# Esconder a cena e redefinir estado
-	reset_battle_scene()
-
-# Limpar os efeitos 
-func cleanup_effects():
-	# Restaurar aparência da carta com highlight se necessário
-	if highlight_target:
-		var unit_instance = get_unit_instance(highlight_target)
-		if unit_instance:
-			unit_instance.modulate = Color(1, 1, 1, 1)
-			unit_instance.scale = card_battle_scale  # Restaurar escala original
-	
-	# Restaurar aparência da carta com burn se necessário
-	if burn_target:
-		var unit_instance = get_unit_instance(burn_target)
-		if unit_instance:
-			unit_instance.modulate = Color(1, 1, 1, 1)
-			unit_instance.scale = card_battle_scale  # Restaurar escala original
-
-# Resetar a cena de batalha para o estado inicial
-func reset_battle_scene():
-	visible = false
-	$AttackerCard.position = Vector2(160, 240)
-	$DefenderCard.position = Vector2(480, 240)
-	$VersusLabel.modulate = Color(1, 0.874, 0, 0)
-	$BattleResult.modulate = Color(1, 1, 1, 0)
-	$AttackEffect.modulate = Color(1, 1, 1, 0)
-	
-	highlight_effect_active = false
-	burn_effect_active = false
-	
-	# Desconectar o sinal para evitar múltiplas conexões
-	if $AnimationPlayer.is_connected("animation_step", Callable(self, "_on_animation_step")):
-		$AnimationPlayer.disconnect("animation_step", Callable(self, "_on_animation_step"))
-
-# Aplicar escala de batalha às cartas
-func apply_battle_scale():
-	card_battle_scale = Vector2(2.2, 2.2)
-	
-	# Aplicar à carta do atacante
-	for child in $AttackerCard.get_children():
-		if child is Node2D:
-			child.scale = card_battle_scale
-	
-	# Aplicar à carta do defensor
-	for child in $DefenderCard.get_children():
-		if child is Node2D:
-			child.scale = card_battle_scale
-
-# Começar o efeito de destaque (highlight) na carta defensora quando ela ganha
-func start_highlight_effect():
-	# Efeito de highlight SOMENTE é aplicado na carta defensora quando ela ganha
-	highlight_target = $DefenderCard
-	
-	# Encontrar a instância da carta
-	var unit_instance = get_unit_instance(highlight_target)
-	if not unit_instance:
-		print("ERRO: Não encontrou instância da carta para aplicar efeito de destaque")
-		return
-	
-	# Iniciar o efeito de destaque (vai ser processado em process_highlight_effect)
-	highlight_effect_active = true
-	highlight_timer = 0.0
-	
-	print("Iniciando efeito de destaque na carta defensora")
-
-# Começar o efeito de queima (burn) na carta defensora quando ela perde
-func start_burn_effect():
-	# Efeito de burn SOMENTE é aplicado na carta defensora quando ela perde
-	burn_target = $DefenderCard
-	
-	# Encontrar a instância da carta
-	var unit_instance = get_unit_instance(burn_target)
-	if not unit_instance:
-		print("ERRO: Não encontrou instância da carta para aplicar efeito de queima")
-		return
-	
-	# Iniciar o efeito de queima (vai ser processado em process_burn_effect)
-	burn_effect_active = true
-	burn_timer = 0.0
-	
-	print("Iniciando efeito de queima na carta defensora")
-
-# Configurar uma carta visual para a batalha
-func setup_card(unit_data, parent_node, is_attacker):
-	# Limpar quaisquer cartas existentes
-	for child in parent_node.get_children():
-		child.queue_free()
-	
-	# Instanciar e configurar nova carta
-	var unit_instance = unit_scene.instantiate()
-	parent_node.add_child(unit_instance)
-	unit_instance.position = Vector2(0, 0)
-	unit_instance.initialize(unit_data)
-	unit_instance.set_player(1 if is_attacker else 2)
-	unit_instance.set_in_distribution_panel(false)
-	unit_instance.rotation_degrees = 0
-
-# Centraliza os elementos da batalha na tela
-func center_battle_elements():
-	var screen_size = get_viewport().get_visible_rect().size
-	var screen_center = screen_size / 2
-	
-	# Posicionar elementos centralizados
-	$VersusLabel.position = Vector2(screen_center.x, screen_center.y)
-	$VersusLabel.pivot_offset = $VersusLabel.size / 2
-	
-	# Centralizar as cartas verticalmente
-	$AttackerCard.position.y = screen_center.y
-	$DefenderCard.position.y = screen_center.y
-	
-	# Centralizar os efeitos
-	$AttackEffect.position = screen_center
-	$AttackEffect.pivot_offset = Vector2(25, 25)
-	
-	print("Centro da tela:", screen_center)
-	print("Posição inicial dos elementos:",
-		"\nAttackerCard:", $AttackerCard.position,
-		"\nDefenderCard:", $DefenderCard.position,
-		"\nAttackEffect:", $AttackEffect.position)
-
-# Função para tocar som de ataque (chamada pela animação)
-func play_attack_sound():
-	if AudioManager and not result_sound_played:
-		AudioManager.play_battle_effect(AudioManager.BATTLE_START_SOUND)
-
-# Função auxiliar para encontrar sprites nas cartas
-func find_sprite_in_children(node):
-	# Procura diretamente
-	if node is Sprite2D:
-		return node
+		result_label.text = "CRITICAL HIT!"
+		result_label.modulate = Color(1, 0, 0)
 		
-	# Procura recursivamente nos filhos
-	for child in node.get_children():
-		if child is Sprite2D:
-			return child
-		
-		# Recursão: procurar em filhos de filhos
-		var found = find_sprite_in_children(child)
-		if found:
-			return found
+		# Som
+		if AudioManager:
+			AudioManager.play_card_sound(attacker_data, true)
 			
-	return null  # Não encontrado 
+		# Efeito visual no perdedor (Direita)
+		var tween = create_tween()
+		tween.tween_property($RightPanel, "modulate", Color(10, 0, 0), 0.1) # Flash vermelho
+		tween.tween_property($RightPanel, "modulate", Color(1, 1, 1), 0.1)
+		tween.tween_property($RightPanel, "rotation_degrees", 5.0, 0.05)
+		tween.tween_property($RightPanel, "rotation_degrees", -5.0, 0.05)
+		tween.tween_property($RightPanel, "rotation_degrees", 0.0, 0.05)
+		tween.tween_property($RightPanel, "modulate:a", 0.0, 0.5) # Desaparece
+		
+	else:
+		result_label.text = "BLOCKED!"
+		result_label.modulate = Color(0.5, 0.5, 1.0)
+		
+		# Som
+		if AudioManager:
+			AudioManager.play_card_sound(defender_data, true)
+			
+		# Efeito visual no atacante (Esquerda - Recoil)
+		var tween = create_tween()
+		tween.tween_property($LeftPanel, "position:x", $LeftPanel.position.x - 50, 0.2).set_trans(Tween.TRANS_ELASTIC)
+		
+# Tremor de tela simples
+func shake_screen():
+	var original_pos = Vector2.ZERO
+	# Como é CanvasLayer, movemos o offset transform
+	var tween = create_tween()
+	for i in range(10):
+		var offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))
+		tween.tween_property(self, "offset", offset, 0.05)
+	tween.tween_property(self, "offset", Vector2.ZERO, 0.05)
+
+# Chamado pela AnimationPlayer no final
+func animation_finished():
+	print("Batalha finalizada")
+	emit_signal("battle_finished", attacker_wins)
+	queue_free() # Destroi a cena para economizar recursos e garantir reset limpo na próxima
+
+# (Compatibilidade) Funções antigas vazias caso chamadas externamente
+func update_card_visual(_p, _u): pass
+func fade_in_battle(): pass
+func fade_out_battle_and_reset(): pass

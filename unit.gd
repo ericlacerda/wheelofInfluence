@@ -24,12 +24,16 @@ signal mouse_exited
 @onready var unit_texture = $Card/UnitTexture
 @onready var order_label = $Card/OrderLabel
 @onready var card = $Card
-@onready var selection_indicator = $SelectionIndicator
+
+var selection_indicator = null
 
 func _ready():
-	# Garantir que o selection_indicator comece invisível
-	if selection_indicator:
+	# Tentar obter o nó SelectionIndicator com segurança
+	if has_node("SelectionIndicator"):
+		selection_indicator = $SelectionIndicator
 		selection_indicator.visible = false
+	
+	# Definir a escala inicial da carta
 	
 	# Definir a escala inicial da carta
 	if not in_distribution_panel:

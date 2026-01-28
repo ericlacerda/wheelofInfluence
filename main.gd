@@ -22,6 +22,7 @@ var radius_y = CIRCLE_RADIUS * 1.0
 # Variáveis para a animação de batalha
 var battles_pending = []  # Lista para armazenar combates pendentes
 var waiting_for_battle_animation = false  # Flag para evitar ações durante animações
+var game_ended = false # Flag para indicar se o jogo acabou
 
 # Nós da UI
 @onready var player_one_score_label = $CanvasLayer/UI/ScoresPanel/PlayerOneScore
@@ -121,7 +122,47 @@ func create_region(region_id):
 func update_ui():
 	player_one_score_label.text = str(player_one_score)
 	player_two_score_label.text = str(player_two_score)
+	# Atualizar o rótulo do jogador atual com cor
+	var player_color = Color(0.2, 0.6, 1.0) if current_player == 1 else Color(1.0, 0.4, 0.4)
 	current_player_label.text = "Turno do Jogador " + str(current_player)
+	current_player_label.add_theme_color_override("font_color", player_color)
+	
+	# Mostrar notificação visual grande (Toast) da mudança de turno
+	show_turn_notification(current_player, player_color)
+
+# Mostra uma notificação temporária grande no centro da tela
+func show_turn_notification(player_id, color):
+	var label = Label.new()
+	label.text = "Turno do Jogador " + str(player_id)
+	label.add_theme_font_size_override("font_size", 48)
+	label.add_theme_color_override("font_color", color)
+	label.add_theme_constant_override("outline_size", 4)
+	label.add_theme_color_override("font_outline_color", Color(0, 0, 0))
+	
+	# Centralizar
+	var screen_size = get_viewport().get_visible_rect().size
+	label.position = (screen_size / 2) - Vector2(250, 50)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	
+	# Fundo semitransparente para contraste
+	var panel = Panel.new()
+	panel.size = Vector2(500, 100)
+	panel.position = (screen_size / 2) - Vector2(250, 50)
+	panel.modulate = Color(0, 0, 0, 0.7)
+	
+	var ui_layer = get_node("CanvasLayer")
+	if ui_layer:
+		ui_layer.add_child(panel)
+		ui_layer.add_child(label)
+		
+		# Criar tween para animação (aparecer -> esperar -> desaparecer)
+		var tween = create_tween()
+		tween.tween_interval(1.5) # Fica visível por 1.5s
+		tween.tween_property(label, "modulate:a", 0.0, 0.5) # Desaparece em 0.5s
+		tween.parallel().tween_property(panel, "modulate:a", 0.0, 0.5)
+		tween.tween_callback(label.queue_free)
+		tween.tween_callback(panel.queue_free)
 
 func _input(event):
 	# Verificar se a tecla Esc foi pressionada
@@ -186,23 +227,29 @@ func generate_unit_fallback():
 	return unit
 #endregion
 
-#region Sistema de batalha
+# region Sistema de batalha
 # Inicia o processo de verificação de batalhas
-func check_and_update_score():
+# Recebe uma lista opcional de regiões para verificar. Se vazia, não verifica nada.
+func check_and_update_score(regions_to_check = []):
 	battles_pending.clear()  # Limpar lista de combates pendentes
 
-	# Encontrar todos os combates pendentes primeiro
-	for region_index in range(regions.size()):
+	print("Verificando batalhas nas regiões: ", regions_to_check)
+
+	# Encontrar combates apenas nas regiões afetadas pela última jogada
+	for region_index in regions_to_check:
 		var region = regions[region_index]
 		var units = region.get_units()
+		
+		# REGRA: Batalha só ocorre se a região tinha 1 carta e recebeu mais uma, totalizando 2.
+		# Se tiver 3 ou mais, não dispara batalha (já está agrupado/cheio).
 		if units.size() == 2:
-			var attacker = units[1]  # Unidade adicionada mais recentemente
+			var attacker = units[1]  # Unidade que acabou de chegar (última da lista)
 			var defender = units[0]  # Unidade que já estava lá
-
+			
 			# Adicionar este combate à lista de pendentes
 			battles_pending.append({
 				"region_id": region_index,
-				"attacker": attacker.duplicate(true),  # Fazer uma cópia completa para evitar problemas
+				"attacker": attacker.duplicate(true),
 				"defender": defender.duplicate(true)
 			})
 
@@ -217,11 +264,18 @@ func check_and_update_score():
 		call_deferred("start_next_battle")  # Usar call_deferred para evitar problemas de timing
 	else:
 		# Nenhum combate para processar
-		print("Nenhum combate para processar")
-		end_turn()
+		print("Nenhum combate para processar nesta jogada")
+		if not waiting_for_battle_animation:
+			end_turn()
 
 # Inicia o próximo combate da fila
 func start_next_battle():
+	# Se o jogo acabou, para tudo!
+	if game_ended:
+		battles_pending.clear()
+		waiting_for_battle_animation = false
+		return
+
 	if battles_pending.is_empty():
 		# Todos os combates foram processados
 		print("Todos os combates foram processados")
@@ -231,6 +285,14 @@ func start_next_battle():
 
 	# Pegar o próximo combate
 	var battle_data = battles_pending.pop_front()
+	
+	# Verificar se a região ainda tem as unidades (segurança)
+	var units_in_region = regions[battle_data.region_id].get_units()
+	if units_in_region.size() < 2:
+		print("ALERTA: Batalha inválida (região com < 2 unidades). Pulando...")
+		start_next_battle() # Recursivamente chama o próximo
+		return
+
 	print("Iniciando combate na região", battle_data.region_id)
 
 	# Criar a cena de batalha se ainda não existe
@@ -239,11 +301,12 @@ func start_next_battle():
 		add_child(battle_scene_instance)
 		battle_scene_instance.connect("battle_finished", Callable(self, "_on_battle_finished"))
 
-	# Configurar e mostrar a batalha
+	# Configurar e mostrar a batalha (passando posicao da regiao para animacao)
 	battle_scene_instance.setup_battle(
 		battle_data.attacker,
 		battle_data.defender,
-		battle_data.region_id
+		battle_data.region_id,
+		regions[battle_data.region_id].global_position
 	)
 
 # Callback quando uma animação de batalha termina
@@ -255,21 +318,101 @@ func _on_battle_finished(attacker_wins):
 	print("Combate finalizado na região", last_battle,
 		  ", Resultado:", "Vitória do atacante" if attacker_wins else "Defesa bem-sucedida")
 
-	if units.size() >= 2 and attacker_wins:
-		# Atacante vence, remove o defensor
-		region.remove_unit(units[0])  # Remover o defensor
-
-		# Adiciona ponto ao jogador atual
-		if current_player == 1:
-			player_one_score += 1
+	# NOVA REGRA:
+	# Se atacante vence: Defender é removido (corrompido).
+	# Se defensor vence: Ninguém morre (ambos ficam).
+	
+	if units.size() >= 2:
+		if attacker_wins:
+			print("Atacante venceu! Corrompeu a defesa. Defensor removido.")
+			region.remove_unit(units[0]) # Remover o defensor (índice 0)
+			
+			# Adiciona ponto ao jogador atual (Atacante)
+			if current_player == 1:
+				player_one_score += 1
+			else:
+				player_two_score += 1
+			
+			# Atualizar a UI
+			update_ui()
 		else:
-			player_two_score += 1
+			print("Defensor venceu! Ataque repelido. Unidades permanecem agrupadas.")
+			# Nenhuma ação de remover unidades
 
-		# Atualizar a UI
-		update_ui()
+	var game_was_won = check_win_condition()
+	
+	if game_was_won:
+		battles_pending.clear()
+		waiting_for_battle_animation = false
+		return
 
 	# Continuar com o próximo combate, se houver
 	call_deferred("start_next_battle")  # Usar call_deferred para evitar problemas de timing
+
+# Verifica se algum jogador atingiu a pontuação de vitória
+func check_win_condition() -> bool:
+	const WIN_SCORE = 10  # Alterado para 10 pontos
+	
+	if player_one_score >= WIN_SCORE:
+		game_over(1)
+		return true
+	elif player_two_score >= WIN_SCORE:
+		game_over(2)
+		return true
+		
+	return false
+
+# Lida com o fim do jogo
+func game_over(winner_id):
+	if game_ended:
+		return
+		
+	print("Fim de Jogo! Vencedor: Jogador ", winner_id)
+	
+	game_ended = true
+	waiting_for_battle_animation = true # Travar também animações
+	close_distribution_panel() # Fechar qualquer UI aberta
+	battles_pending.clear()
+	
+	# Parar timers de IA
+	for child in get_children():
+		if child is Timer:
+			child.stop()
+	
+	# Mostrar mensagem de vitória
+	var message = "Jogador " + str(winner_id) + " Venceu!"
+	var color = Color(0, 1, 0) if winner_id == 1 else Color(1, 0, 0)
+	
+	# Criar um label simples para mostrar o vencedor (sobrepondo tudo)
+	var label = Label.new()
+	label.text = message
+	label.add_theme_font_size_override("font_size", 64)
+	label.add_theme_color_override("font_color", color)
+	label.add_theme_constant_override("outline_size", 4)
+	label.add_theme_color_override("font_outline_color", Color(0, 0, 0))
+	
+	# Centralizar
+	var screen_size = get_viewport().get_visible_rect().size
+	label.position = (screen_size / 2) - Vector2(250, 50) # Ajuste aproximado
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	
+	# Adicionar à camada de UI (CanvasLayer)
+	var ui_layer = get_node("CanvasLayer")
+	if ui_layer:
+		ui_layer.add_child(label)
+		
+		# Botão de reiniciar
+		var restart_btn = Button.new()
+		restart_btn.text = "Reiniciar Jogo"
+		restart_btn.position = (screen_size / 2) + Vector2(-60, 50)
+		restart_btn.size = Vector2(120, 40)
+		restart_btn.connect("pressed", Callable(self, "_on_restart_game_pressed"))
+		ui_layer.add_child(restart_btn)
+
+# Reiniciar o jogo
+func _on_restart_game_pressed():
+	get_tree().reload_current_scene()
+
 
 # Finaliza o turno atual
 func end_turn():
@@ -279,12 +422,114 @@ func end_turn():
 
 	# Auto-salvar o jogo
 	save_game()
+	
+	# Verificar se é a vez da IA (Jogador 2)
+	if current_player == 2:
+		print("Turno da IA iniciado. Aguardando...")
+		
+		# Bloquear interações da UI se necessário (opcional, por enquanto só visual)
+		# is_distribution_panel_visible = true # Hack simples para bloquear cliques
+		
+		# Timer para simular "pensamento" e não ser instantâneo
+		var timer = get_tree().create_timer(1.5)
+		timer.connect("timeout", Callable(self, "execute_ai_turn"))
+	else:
+		print("Turno do Jogador 1 iniciado.")
+
+# Executa o turno da IA
+func execute_ai_turn():
+	var ai_opponent = load("res://ai_opponent.gd").new()
+	# Cria dicionário de scores com nomes das chaves esperadas (embora não usado agora na IA, pode ser útil)
+	var scores_data = {"player_one": player_one_score, "player_two": player_two_score}
+	var best_move = ai_opponent.find_best_move(regions, scores_data, current_player)
+	
+	if best_move:
+		execute_ai_move(best_move)
+	else:
+		print("IA não encontrou jogadas válidas (ou sem unidades). Passando a vez.")
+		end_turn()
+
+# Executa fisicamente o movimento escolhido pela IA
+func execute_ai_move(move_data):
+	var region_id = move_data.region_id
+	var unit_order = move_data.unit_order
+	
+	print("IA executando movimento na região ", region_id)
+	
+	# Simular a seleção da região
+	selected_region = region_id
+	selected_units = unit_order.duplicate() # A ordem já vem definida pela IA
+	
+	# Usar a lógica de distribuição existente
+	_on_distribute_units_ai()
+
+# Versão modificada do _on_distribute_units para aceitar inputs da IA sem depender da UI
+func _on_distribute_units_ai():
+	print("Distribuindo unidades via IA...")
+	
+	# Feedback Visual: Destacar a região que a IA escolheu
+	var source_region_node = regions[selected_region]
+	var original_modulate = source_region_node.modulate
+	
+	# Piscar a região escolhida
+	var tween_highlight = create_tween()
+	tween_highlight.tween_property(source_region_node, "modulate", Color(1.5, 0.5, 0.5), 0.2)
+	tween_highlight.tween_property(source_region_node, "modulate", original_modulate, 0.2)
+	tween_highlight.tween_property(source_region_node, "modulate", Color(1.5, 0.5, 0.5), 0.2)
+	tween_highlight.tween_property(source_region_node, "modulate", original_modulate, 0.2)
+	await tween_highlight.finished
+	
+	var units_to_distribute = selected_units.duplicate()
+
+	# Remove as unidades selecionadas da região de origem
+	for unit in units_to_distribute:
+		regions[selected_region].remove_unit(unit)
+
+	# Travar interações durante a animação
+	waiting_for_battle_animation = true
+
+	# Distribui as unidades no sentido anti-horário
+	var affected_regions = []
+	var start_pos = regions[selected_region].global_position
+	var current_source_region_id = selected_region
+	
+	for i in range(units_to_distribute.size()):
+		var target_region_id = (current_source_region_id - (i + 1) + NUM_REGIONS) % NUM_REGIONS
+		var target_pos = regions[target_region_id].global_position
+		
+		# Feedback no console
+		print("IA: Movendo unidade ID: ", units_to_distribute[i].id, " para região: ", target_region_id)
+		
+		affected_regions.append(target_region_id)
+		
+		# Animar a carta "voando" (mesma função usada pelo jogador)
+		await animate_card_distribution(units_to_distribute[i], start_pos, target_pos)
+		
+		# Adicionar logicamente à região de destino
+		regions[target_region_id].add_unit(units_to_distribute[i])
+		
+		start_pos = target_pos
+
+	# Destravar interações
+	waiting_for_battle_animation = false
+
+	# Resetar seleção
+	selected_region = null
+	selected_units.clear()
+
+	# Verifica batalhas e atualiza pontuação
+	check_and_update_score(affected_regions)
+
 #endregion
 
 #region Sistema de distribuição
 # Evento quando uma região é clicada
 func _on_region_clicked(region_id):
 	print("Função _on_region_clicked chamada para região: ", region_id)
+
+	# Prevenir se o jogo acabou
+	if game_ended:
+		return
 
 	# Prevenir processamento excessivo se já estiver mostrando painel
 	if is_distribution_panel_visible:
@@ -374,22 +619,85 @@ func _on_distribute_units():
 	# Guardar cópias das unidades selecionadas para evitar problemas com referências
 	var units_to_distribute = selected_units.duplicate()
 
-	# Remove as unidades selecionadas da região de origem
+	# Remove as unidades selecionadas da região de origem IMEDIATAMENTE (logicamente)
+	# Mas visualmente vamos criar "fantasmas" para animar
 	for unit in units_to_distribute:
-		print("Removendo unidade ID: ", unit.id, " da região ", selected_region)
 		regions[selected_region].remove_unit(unit)
 
+	# NÃO fechar o painel ainda, pois precisamos de selected_region
+	
+	# Travar interações durante a animação
+	waiting_for_battle_animation = true
+
 	# Distribui as unidades no sentido anti-horário (na ordem selecionada)
+	var affected_regions = []
+	var start_pos = regions[selected_region].global_position
+	var current_source_region_id = selected_region # Para referência
+	
 	for i in range(units_to_distribute.size()):
-		var target_region_id = (selected_region - (i + 1) + NUM_REGIONS) % NUM_REGIONS
-		print("Movendo unidade ID: ", units_to_distribute[i].id, " para região: ", target_region_id)
+		var target_region_id = (current_source_region_id - (i + 1) + NUM_REGIONS) % NUM_REGIONS
+		var target_pos = regions[target_region_id].global_position
+		
+		affected_regions.append(target_region_id)
+		
+		# Animar a carta "voando"
+		await animate_card_distribution(units_to_distribute[i], start_pos, target_pos)
+		
+		# Adicionar logicamente à região de destino APÓS a animação
 		regions[target_region_id].add_unit(units_to_distribute[i])
+		
+		start_pos = target_pos 
 
-	# Fechar o painel de distribuição
+	# Destravar interações
+	waiting_for_battle_animation = false
+	
+	# AGORA sim fechar o painel de distribuição
 	close_distribution_panel()
+	
+	# Verifica batalhas apenas nas regiões afetadas
+	check_and_update_score(affected_regions)
 
-	# Verifica batalhas e atualiza pontuação
-	check_and_update_score()
+# Anima uma carta voando de A para B
+func animate_card_distribution(unit_data, from_pos, to_pos):
+	if not unit_data:
+		return
+		
+	# Criar um sprite temporário para a animação
+	var sprite = Sprite2D.new()
+	
+	# Validar caminho da imagem
+	var img_path = "res://Image/Cards/" + unit_data.image
+	if ResourceLoader.exists(img_path):
+		sprite.texture = load(img_path)
+	else:
+		# Tentar subdiretório Cards (caso da estrutura aninhada)
+		var nested_path = "res://Image/Cards/Cards/" + unit_data.image
+		if ResourceLoader.exists(nested_path):
+			sprite.texture = load(nested_path)
+		elif ResourceLoader.exists("res://icon.svg"):
+			print("AVISO: Imagem não encontrada: " + img_path + ". Usando ícone.")
+			sprite.texture = load("res://icon.svg")
+		else:
+			printerr("ERRO CRITICO: Nenhuma imagem de fallback encontrada!")
+
+	sprite.position = from_pos
+	sprite.z_index = 100 # Bem acima de tudo
+	add_child(sprite)
+	
+	# Som de distribuição (opcional)
+	# AudioManager.play_card_sound() 
+	
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	tween.tween_property(sprite, "position", to_pos, 0.3) 
+	tween.parallel().tween_property(sprite, "scale", Vector2(0.4, 0.4), 0.15).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(sprite, "scale", Vector2(0.3, 0.3), 0.15).set_delay(0.15).set_ease(Tween.EASE_IN)
+	
+	await tween.finished
+	if is_instance_valid(sprite):
+		sprite.queue_free()
 
 # Seleciona automaticamente as unidades que faltam
 func auto_select_remaining_units(units_from_region):

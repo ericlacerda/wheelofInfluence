@@ -54,10 +54,14 @@ func get_card_by_id(id):
 func get_all_cards():
 	return cards_data
 
+var unit_counter = 0
+
 # Cria uma unidade baseada em uma carta específica
 func create_unit_from_card(card):
+	unit_counter += 1
 	var unit = {}
-	unit.id = str(randi() % 1000000)  # ID único para a instância da unidade
+	# Gerar ID único robusto: timestamp + contador + random
+	unit.id = str(Time.get_ticks_usec()) + "_" + str(unit_counter) + "_" + str(randi() % 10000)
 	unit.card_id = card.id            # ID da carta para referência
 	unit.title = card.title
 	unit.attack = card.attack
