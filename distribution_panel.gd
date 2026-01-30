@@ -22,7 +22,7 @@ func _ready():
 	
 	# Configurar texto de instrução
 	$Instructions.text = "Selecione a ORDEM de distribuição das cartas.\nTodas as cartas serão distribuídas."
-	$Instructions.add_theme_color_override("font_color", Color(1, 0.9, 0.6, 1))
+	$Instructions.add_theme_color_override("font_color", Color(0.85, 0.58, 0.24, 1))
 	$Instructions.add_theme_font_size_override("font_size", 12)
 	
 	# Conectar botões à funções

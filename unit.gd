@@ -128,7 +128,12 @@ func initialize(unit_data):
 		card_id = unit_data.card_id
 	if "image" in unit_data:
 		# Usar o caminho da imagem específica desta carta
-		image_path = "res://Image/Cards/Cards/" + unit_data.image
+		var base_path = "res://Image/Cards/" + unit_data.image
+		if ResourceLoader.exists(base_path):
+			image_path = base_path
+		else:
+			# Fallback para estrutura antiga ou aninhada
+			image_path = "res://Image/Cards/Cards/" + unit_data.image
 	else:
 		# Se não tiver imagem específica, usar uma aleatória (comportamento antigo)
 		var img_index = randi() % 24
@@ -158,56 +163,83 @@ func set_player(player_number):
 
 # Atualiza a visualização da carta
 func update_card():
-	if attack_label and defense_label and title_label and description_label and unit_texture:
+	# Estatísticas
+	if attack_label:
 		attack_label.text = str(attack)
+		# Electric Crimson #FF0055
+		attack_label.add_theme_color_override("font_color", Color("#FF0055"))
+		
+	if defense_label:
 		defense_label.text = str(defense)
+		# Cyan Frost #00F0FF
+		defense_label.add_theme_color_override("font_color", Color("#00F0FF"))
+
+	# Garantir que os rótulos estáticos "ATK" e "DEF" estejam visíveis
+	var stat_labels = $Card/StatLabels
+	if stat_labels:
+		# Remover a modulação escura/transparente do editor
+		stat_labels.modulate = Color(1, 1, 1, 1) 
+		
+		# Opcional: Colorir os rótulos para combinar com os números
+		var atk_static = stat_labels.get_node_or_null("AtkLabel")
+		if atk_static:
+			atk_static.add_theme_color_override("font_color", Color("#FF0055")) # Red
+			
+		var def_static = stat_labels.get_node_or_null("DefLabel")
+		if def_static:
+			def_static.add_theme_color_override("font_color", Color("#00F0FF")) # Cyan
+
+	if title_label:
 		title_label.text = title
+	if description_label:
 		description_label.text = description
 		
-		# Carregar a textura da unidade
-		if ResourceLoader.exists(image_path):
-			var texture = load(image_path)
-			unit_texture.texture = texture
-		
-		# Definir cor da borda baseada no jogador
-		var card_border = $Card/Border
-		if card_border:
-			if player == 1:
-				card_border.modulate = Color(0.2, 0.5, 0.9) # Azul para jogador 1
-			else:
-				card_border.modulate = Color(0.9, 0.2, 0.2) # Vermelho para jogador 2
+	# Carregar a textura da unidade
+	if unit_texture and ResourceLoader.exists(image_path):
+		var texture = load(image_path)
+		unit_texture.texture = texture
+	
+	# Definir cor da borda baseada no jogador com cores Neon
+	var card_border = $Card/Border
+	if card_border:
+		if player == 1:
+			card_border.modulate = Color("#00F0FF") # Cyan Frost para Jogador 1 (Defesa/Azul)
+		else:
+			card_border.modulate = Color("#FF0055") # Electric Crimson para Jogador 2 (Ataque/Vermelho)
 
 # Define o estado de seleção da carta
 func set_selected(selected, order = -1):
 	if selected:
-		# Cor azulada para cartas selecionadas (em vez do cinza)
-		$Card.modulate = Color(0.7, 0.8, 1.0, 1.0)  # Tom azulado suave
+		# Solar Gold #FFD700 para destaque de seleção
+		$Card.modulate = Color(1.2, 1.2, 1.2) # Brilho extra
+		$Card/Border.modulate = Color("#FFD700") 
 		
 		# Se houver uma ordem, mostrar no centro com tamanho maior
 		if order >= 0 and order_label:
 			order_label.text = str(order + 1)
 			order_label.visible = true
 			
-			# Ajustar a cor do texto de acordo com o número de ordem
-			# Isso ajuda a diferenciar visualmente a sequência
+			# Cores Neon para a ordem
 			var order_colors = [
-				Color(1, 0, 0),  # Primeira ordem - vermelho
-				Color(0, 0.8, 0),  # Segunda ordem - verde
-				Color(0, 0, 1),  # Terceira ordem - azul
-				Color(1, 0.5, 0),  # Quarta ordem - laranja
-				Color(0.8, 0, 0.8)  # Quinta ordem - roxo
+				Color("#FF0055"),  # Crimson
+				Color("#00F0FF"),  # Cyan
+				Color("#FFD700"),  # Gold
+				Color("#9D00FF"),  # Neon Purple
+				Color("#00FF00")   # Neon Green
 			]
 			
-			# Selecionar a cor com base na ordem (com ciclo para mais de 5 ordens)
+			# Selecionar a cor com base na ordem
 			var color_index = order % order_colors.size()
 			order_label.add_theme_color_override("font_color", order_colors[color_index])
+			order_label.add_theme_constant_override("outline_size", 4) # Outline mais grosso
 			
-			# Aumentar o tamanho da fonte para números maiores
+			# Aumentar o tamanho da fonte
 			order_label.add_theme_font_size_override("font_size", 48)
 	else:
 		$Card.modulate = Color(1, 1, 1) # Cor normal
 		if order_label:
 			order_label.visible = false 
+		update_card() # Restaura as cores originais da borda 
 
 # Conectar o sinal de clique apenas se a unidade estiver no painel de distribuição
 func _on_card_gui_input(event):

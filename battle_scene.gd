@@ -60,10 +60,10 @@ func setup_combatant_panel(panel, unit, is_attacker):
 	# Estatísticas
 	if is_attacker:
 		stats_label.text = "ATK: " + str(int(unit.attack))
-		stats_label.add_theme_color_override("font_color", Color(1, 0.4, 0.4)) # Vermelho suave
+		stats_label.add_theme_color_override("font_color", Color(1.0, 0.0, 0.333, 1)) # Electric Crimson #FF0055
 	else:
 		stats_label.text = "DEF: " + str(int(unit.defense))
-		stats_label.add_theme_color_override("font_color", Color(0.4, 0.6, 1)) # Azul suave
+		stats_label.add_theme_color_override("font_color", Color(0.0, 0.941, 1.0, 1)) # Cyan Frost #00F0FF
 
 # Sequência de Batalha via Código (Mais robusta que AnimationPlayer para UI dinâmica)
 func start_battle_sequence_code():
@@ -143,7 +143,7 @@ func trigger_impact_visuals():
 	result_label.visible = true
 	if attacker_wins:
 		result_label.text = "CRITICAL HIT!"
-		result_label.modulate = Color(1, 0, 0)
+		result_label.modulate = Color(2.0, 0.0, 0.66) # HDR Electric Crimson
 		
 		# Som
 		if AudioManager:
@@ -151,7 +151,7 @@ func trigger_impact_visuals():
 			
 		# Efeito visual no perdedor (Direita)
 		var tween = create_tween()
-		tween.tween_property($RightPanel, "modulate", Color(10, 0, 0), 0.1) # Flash vermelho
+		tween.tween_property($RightPanel, "modulate", Color(2, 0, 1), 0.1) # Flash
 		tween.tween_property($RightPanel, "modulate", Color(1, 1, 1), 0.1)
 		tween.tween_property($RightPanel, "rotation_degrees", 5.0, 0.05)
 		tween.tween_property($RightPanel, "rotation_degrees", -5.0, 0.05)
@@ -160,7 +160,7 @@ func trigger_impact_visuals():
 		
 	else:
 		result_label.text = "BLOCKED!"
-		result_label.modulate = Color(0.5, 0.5, 1.0)
+		result_label.modulate = Color(0.0, 1.8, 2.0) # HDR Cyan Frost
 		
 		# Som
 		if AudioManager:

@@ -1,3 +1,4 @@
 res://default_env.tres
-res://battle_scene.gd
-res://battle_scene.tscn
+res://distribution_panel.gd
+res://unit.gd
+res://main.gd

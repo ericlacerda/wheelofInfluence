@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://cgr2j1l3vnluu"]
 
 [ext_resource type="Script" uid="uid://ddfhoun405a6f" path="res://unit.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://bxpf0q4iah6db" path="res://Image/Cards/Cards/frame_0.png" id="2"]
-[ext_resource type="Texture2D" uid="uid://cxkhfw4v6j0ca" path="res://Image/Cards/Cards/Front.png" id="2_davkp"]
+[ext_resource type="Texture2D" path="res://Image/Cards/Neon/frame_0.png" id="2"]
+[ext_resource type="Texture2D" path="res://Image/Cards/Neon/Front.png" id="2_davkp"]
 [ext_resource type="FontFile" uid="uid://bsbwqpxmuumr8" path="res://Image/Font/dogicapixel.ttf" id="4_5wnup"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_5wnup"]
@@ -56,7 +56,7 @@ offset_top = 2.5
 offset_right = 15.0
 offset_bottom = 12.5
 mouse_filter = 2
-color = Color(0.85098, 0.168627, 0.168627, 1)
+color = Color(3, 0.2, 0.2, 1)
 
 [node name="AttackLabel" type="Label" parent="Card/AttackBox"]
 layout_mode = 1
@@ -92,7 +92,7 @@ offset_top = 2.5
 offset_right = 66.0
 offset_bottom = 12.5
 mouse_filter = 2
-color = Color(0.0588235, 0.482353, 0.65098, 1)
+color = Color(0.1, 1.2, 2.0, 1)
 
 [node name="DefenseLabel" type="Label" parent="Card/DefenseBox"]
 layout_mode = 1

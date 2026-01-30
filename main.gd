@@ -662,42 +662,55 @@ func animate_card_distribution(unit_data, from_pos, to_pos):
 	if not unit_data:
 		return
 		
-	# Criar um sprite temporário para a animação
-	var sprite = Sprite2D.new()
+	# Instanciar uma unidade COMPLETA para a animação (com moldura, stats, etc)
+	# Isso resolve o problema da carta "gigante" (apenas imagem) e da falta de stats
+	var temp_unit = unit_scene.instantiate()
 	
-	# Validar caminho da imagem
-	var img_path = "res://Image/Cards/" + unit_data.image
-	if ResourceLoader.exists(img_path):
-		sprite.texture = load(img_path)
-	else:
-		# Tentar subdiretório Cards (caso da estrutura aninhada)
-		var nested_path = "res://Image/Cards/Cards/" + unit_data.image
-		if ResourceLoader.exists(nested_path):
-			sprite.texture = load(nested_path)
-		elif ResourceLoader.exists("res://icon.svg"):
-			print("AVISO: Imagem não encontrada: " + img_path + ". Usando ícone.")
-			sprite.texture = load("res://icon.svg")
-		else:
-			printerr("ERRO CRITICO: Nenhuma imagem de fallback encontrada!")
-
-	sprite.position = from_pos
-	sprite.z_index = 100 # Bem acima de tudo
-	add_child(sprite)
+	# Adicionar à cena (precisa estar na árvore para initialize funcionar bem com nós)
+	add_child(temp_unit)
+	
+	# Configurar a unidade com os dados
+	temp_unit.initialize(unit_data)
+	
+	# Forçar atualização visual extra para garantir
+	temp_unit.update_card()
+	
+	# Configurar posição inicial e z-index
+	temp_unit.position = from_pos
+	temp_unit.z_index = 100 # Bem acima de tudo
+	
+	# Definir a escala inicial da animação
+	# Usamos a escala padrão que a unidade teria no tabuleiro (geralmente 0.4)
+	# Iniciamos um pouco menor para dar efeito de "saindo do baralho" ou similar
+	var start_scale = Vector2(0.1, 0.1)
+	var travel_scale = Vector2(0.45, 0.45) # Um pouco maior durante o voo
+	var final_scale = Vector2(0.4, 0.4) # Escala final de aterrissagem
+	
+	temp_unit.scale = start_scale
 	
 	# Som de distribuição (opcional)
-	# AudioManager.play_card_sound() 
+	# if AudioManager:
+	# 	AudioManager.play_card_sound(unit_data, false) 
 	
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC)
 	tween.set_ease(Tween.EASE_OUT)
 	
-	tween.tween_property(sprite, "position", to_pos, 0.3) 
-	tween.parallel().tween_property(sprite, "scale", Vector2(0.4, 0.4), 0.15).set_ease(Tween.EASE_OUT)
-	tween.parallel().tween_property(sprite, "scale", Vector2(0.3, 0.3), 0.15).set_delay(0.15).set_ease(Tween.EASE_IN)
+	# Movimento até o destino
+	tween.tween_property(temp_unit, "position", to_pos, 0.5) 
+	
+	# Animação de escala (cresce -> viaja -> ajusta)
+	tween.parallel().tween_property(temp_unit, "scale", travel_scale, 0.2).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(temp_unit, "scale", final_scale, 0.3).set_delay(0.2).set_ease(Tween.EASE_IN)
+	
+	# Rotação para efeito visual
+	tween.parallel().tween_property(temp_unit, "rotation_degrees", 360.0, 0.5).from(0.0)
 	
 	await tween.finished
-	if is_instance_valid(sprite):
-		sprite.queue_free()
+	
+	# Remover a unidade temporária
+	if is_instance_valid(temp_unit):
+		temp_unit.queue_free()
 
 # Seleciona automaticamente as unidades que faltam
 func auto_select_remaining_units(units_from_region):
