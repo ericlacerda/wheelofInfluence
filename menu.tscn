@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://djc3nee84ns6s"]
+[gd_scene format=3 uid="uid://djc3nee84ns6s"]
 
 [ext_resource type="Script" uid="uid://bxkcox53cf3l6" path="res://simple_menu.gd" id="1_nyr1s"]
-[ext_resource type="Texture2D" uid="uid://csbibnpmc81it" path="res://Image/menu/Menu.png" id="2_4wcme"]
+[ext_resource type="Texture2D" uid="uid://crr8myo7se3yj" path="res://Image/menu/Menu.png" id="2_4wcme"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5mrkw"]
 bg_color = Color(0.94902, 0.933333, 0.921569, 0.752941)
@@ -21,7 +21,7 @@ corner_radius_bottom_left = 10
 shadow_color = Color(0, 0, 0, 0.243137)
 shadow_size = 5
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=724398248]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,7 +30,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nyr1s")
 
-[node name="BackgroundTexture" type="TextureRect" parent="."]
+[node name="BackgroundTexture" type="TextureRect" parent="." unique_id=1533760912]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -41,7 +41,7 @@ texture = ExtResource("2_4wcme")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="TitlePanel" type="Panel" parent="."]
+[node name="TitlePanel" type="Panel" parent="." unique_id=615676546]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -53,7 +53,7 @@ offset_bottom = 79.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_5mrkw")
 
-[node name="TitleLabel" type="Label" parent="TitlePanel"]
+[node name="TitleLabel" type="Label" parent="TitlePanel" unique_id=771424430]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -66,7 +66,7 @@ text = "Wheel of Influence"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MenuPanel" type="Panel" parent="."]
+[node name="MenuPanel" type="Panel" parent="." unique_id=933269998]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -82,7 +82,7 @@ grow_vertical = 2
 scale = Vector2(1, 1.12)
 theme_override_styles/panel = SubResource("StyleBoxFlat_k8e0j")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MenuPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuPanel" unique_id=38895809]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -96,43 +96,43 @@ grow_vertical = 2
 scale = Vector2(1, 0.753333)
 theme_override_constants/separation = 20
 
-[node name="StartButton" type="Button" parent="MenuPanel/VBoxContainer"]
+[node name="StartButton" type="Button" parent="MenuPanel/VBoxContainer" unique_id=99906006]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Iniciar"
 
-[node name="ContinueButton" type="Button" parent="MenuPanel/VBoxContainer"]
+[node name="ContinueButton" type="Button" parent="MenuPanel/VBoxContainer" unique_id=1570523116]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Continuar"
 
-[node name="AudioButton" type="Button" parent="MenuPanel/VBoxContainer"]
+[node name="AudioButton" type="Button" parent="MenuPanel/VBoxContainer" unique_id=493399791]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Áudio"
 
-[node name="CardsButton" type="Button" parent="MenuPanel/VBoxContainer"]
+[node name="CardsButton" type="Button" parent="MenuPanel/VBoxContainer" unique_id=536470246]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Biblioteca de Cartas"
 
-[node name="CreditsButton" type="Button" parent="MenuPanel/VBoxContainer"]
+[node name="CreditsButton" type="Button" parent="MenuPanel/VBoxContainer" unique_id=2146857339]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Créditos"
 
-[node name="QuitButton" type="Button" parent="MenuPanel/VBoxContainer"]
+[node name="QuitButton" type="Button" parent="MenuPanel/VBoxContainer" unique_id=1563608684]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Sair"
 
-[node name="Version" type="Label" parent="."]
+[node name="Version" type="Label" parent="." unique_id=1942701422]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -150,7 +150,7 @@ text = "Versão 1.0.0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="AudioContainer" type="Control" parent="."]
+[node name="AudioContainer" type="Control" parent="." unique_id=1894441267]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -159,7 +159,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="AudioPanel" type="Panel" parent="AudioContainer"]
+[node name="AudioPanel" type="Panel" parent="AudioContainer" unique_id=61268140]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -174,7 +174,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_5mrkw")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="AudioContainer/AudioPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="AudioContainer/AudioPanel" unique_id=1595339055]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -187,83 +187,83 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
 
-[node name="TitleLabel" type="Label" parent="AudioContainer/AudioPanel/VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="AudioContainer/AudioPanel/VBoxContainer" unique_id=1443936149]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Configurações de Áudio"
 horizontal_alignment = 1
 
-[node name="MasterVolumeContainer" type="VBoxContainer" parent="AudioContainer/AudioPanel/VBoxContainer"]
+[node name="MasterVolumeContainer" type="VBoxContainer" parent="AudioContainer/AudioPanel/VBoxContainer" unique_id=692288187]
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="Label" type="Label" parent="AudioContainer/AudioPanel/VBoxContainer/MasterVolumeContainer"]
+[node name="Label" type="Label" parent="AudioContainer/AudioPanel/VBoxContainer/MasterVolumeContainer" unique_id=347575941]
 layout_mode = 2
 text = "Volume Principal"
 
-[node name="MasterSlider" type="HSlider" parent="AudioContainer/AudioPanel/VBoxContainer/MasterVolumeContainer"]
+[node name="MasterSlider" type="HSlider" parent="AudioContainer/AudioPanel/VBoxContainer/MasterVolumeContainer" unique_id=957390981]
 layout_mode = 2
 min_value = -50.0
 max_value = 0.0
 step = 0.1
 value = -10.0
 
-[node name="MusicVolumeContainer" type="VBoxContainer" parent="AudioContainer/AudioPanel/VBoxContainer"]
+[node name="MusicVolumeContainer" type="VBoxContainer" parent="AudioContainer/AudioPanel/VBoxContainer" unique_id=626882620]
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="Label" type="Label" parent="AudioContainer/AudioPanel/VBoxContainer/MusicVolumeContainer"]
+[node name="Label" type="Label" parent="AudioContainer/AudioPanel/VBoxContainer/MusicVolumeContainer" unique_id=897449220]
 layout_mode = 2
 text = "Volume da Música"
 
-[node name="MusicSlider" type="HSlider" parent="AudioContainer/AudioPanel/VBoxContainer/MusicVolumeContainer"]
+[node name="MusicSlider" type="HSlider" parent="AudioContainer/AudioPanel/VBoxContainer/MusicVolumeContainer" unique_id=1295161299]
 layout_mode = 2
 min_value = -50.0
 max_value = 0.0
 step = 0.1
 value = -15.0
 
-[node name="SFXVolumeContainer" type="VBoxContainer" parent="AudioContainer/AudioPanel/VBoxContainer"]
+[node name="SFXVolumeContainer" type="VBoxContainer" parent="AudioContainer/AudioPanel/VBoxContainer" unique_id=1821135990]
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="Label" type="Label" parent="AudioContainer/AudioPanel/VBoxContainer/SFXVolumeContainer"]
+[node name="Label" type="Label" parent="AudioContainer/AudioPanel/VBoxContainer/SFXVolumeContainer" unique_id=430423167]
 layout_mode = 2
 text = "Volume dos Efeitos"
 
-[node name="SFXSlider" type="HSlider" parent="AudioContainer/AudioPanel/VBoxContainer/SFXVolumeContainer"]
+[node name="SFXSlider" type="HSlider" parent="AudioContainer/AudioPanel/VBoxContainer/SFXVolumeContainer" unique_id=2096199576]
 layout_mode = 2
 min_value = -50.0
 max_value = 0.0
 step = 0.1
 value = -10.0
 
-[node name="MuteContainer" type="HBoxContainer" parent="AudioContainer/AudioPanel/VBoxContainer"]
+[node name="MuteContainer" type="HBoxContainer" parent="AudioContainer/AudioPanel/VBoxContainer" unique_id=897563027]
 layout_mode = 2
 
-[node name="MuteCheckBox" type="CheckBox" parent="AudioContainer/AudioPanel/VBoxContainer/MuteContainer"]
+[node name="MuteCheckBox" type="CheckBox" parent="AudioContainer/AudioPanel/VBoxContainer/MuteContainer" unique_id=615519668]
 layout_mode = 2
 text = "Mudo"
 
-[node name="Spacer" type="Control" parent="AudioContainer/AudioPanel/VBoxContainer/MuteContainer"]
+[node name="Spacer" type="Control" parent="AudioContainer/AudioPanel/VBoxContainer/MuteContainer" unique_id=2048761447]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MuteAllButton" type="Button" parent="AudioContainer/AudioPanel/VBoxContainer/MuteContainer"]
+[node name="MuteAllButton" type="Button" parent="AudioContainer/AudioPanel/VBoxContainer/MuteContainer" unique_id=1528930666]
 layout_mode = 2
 text = "Mutar Tudo"
 
-[node name="ResumeContainer" type="HBoxContainer" parent="AudioContainer/AudioPanel/VBoxContainer"]
+[node name="ResumeContainer" type="HBoxContainer" parent="AudioContainer/AudioPanel/VBoxContainer" unique_id=1470735422]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 1
 
-[node name="BackButton" type="Button" parent="AudioContainer/AudioPanel/VBoxContainer/ResumeContainer"]
+[node name="BackButton" type="Button" parent="AudioContainer/AudioPanel/VBoxContainer/ResumeContainer" unique_id=1061671193]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Voltar"
 
-[node name="CreditsContainer" type="Control" parent="."]
+[node name="CreditsContainer" type="Control" parent="." unique_id=991894272]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -272,7 +272,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CreditsPanel" type="Panel" parent="CreditsContainer"]
+[node name="CreditsPanel" type="Panel" parent="CreditsContainer" unique_id=1755526212]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -287,7 +287,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_5mrkw")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CreditsContainer/CreditsPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CreditsContainer/CreditsPanel" unique_id=1041760989]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -300,23 +300,23 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 15
 
-[node name="TitleLabel" type="Label" parent="CreditsContainer/CreditsPanel/VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="CreditsContainer/CreditsPanel/VBoxContainer" unique_id=1602620285]
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "Créditos"
 horizontal_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="CreditsContainer/CreditsPanel/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="CreditsContainer/CreditsPanel/VBoxContainer" unique_id=1676903606]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CreditsText" type="RichTextLabel" parent="CreditsContainer/CreditsPanel/VBoxContainer/ScrollContainer"]
+[node name="CreditsText" type="RichTextLabel" parent="CreditsContainer/CreditsPanel/VBoxContainer/ScrollContainer" unique_id=500188376]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_font_sizes/italics_font_size = 16
 theme_override_font_sizes/normal_font_size = 16
 theme_override_font_sizes/bold_font_size = 18
+theme_override_font_sizes/italics_font_size = 16
 bbcode_enabled = true
 text = "[center][b]Wheel of Influence[/b][/center]
 
@@ -335,11 +335,11 @@ Todos os testadores que ajudaram no desenvolvimento
 
 © 2023 Todos os direitos reservados"
 
-[node name="BackButtonContainer" type="HBoxContainer" parent="CreditsContainer/CreditsPanel/VBoxContainer"]
+[node name="BackButtonContainer" type="HBoxContainer" parent="CreditsContainer/CreditsPanel/VBoxContainer" unique_id=420137141]
 layout_mode = 2
 alignment = 1
 
-[node name="BackButton" type="Button" parent="CreditsContainer/CreditsPanel/VBoxContainer/BackButtonContainer"]
+[node name="BackButton" type="Button" parent="CreditsContainer/CreditsPanel/VBoxContainer/BackButtonContainer" unique_id=1503053738]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Voltar"

@@ -3,3 +3,5 @@ res://unit.gd
 res://unit.tscn
 res://distribution_panel.gd
 res://region.gd
+res://menu.tscn
+res://burn_effect.gdshader

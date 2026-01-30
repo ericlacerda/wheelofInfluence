@@ -1,10 +1,10 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1769745841
+::res://::1769746816
 ai_opponent.gd::GDScript::6739825854988538593::1769633663::0::1::::<>Node<><>0<>0<><>::
 audio_manager.gd::GDScript/GDScript::4530816944481264161::1741609648::0::1::::<>Node<><>0<>0<><>::
 battle_scene.gd::GDScript::405966564069281275::1769644993::0::1::::<>CanvasLayer<><>0<>0<><>::
 battle_scene.tscn::PackedScene::8304657229875710714::1769644284::0::1::::<><><>0<>0<><>::uid://f1whe00to2h8::::res://battle_scene.gd<>res://neon_env.tres
-burn_effect.gdshader::Shader::5990021761807461878::1742962221::0::1::::<><><>0<>0<><>::
+burn_effect.gdshader::Shader::5990021761807461878::1769746806::0::1::::<><><>0<>0<><>::
 cards_data.json::JSON::-1::1769645017::0::1::::<><><>0<>0<><>::
 cards_viewer.gd::GDScript/GDScript::2395313894117834312::1741572942::0::1::::<>Control<><>0<>0<><>::
 cards_viewer.tscn::PackedScene/PackedScene::6737565188670024490::1769644300::0::1::::<><><>0<>0<><>::res://cards_viewer.gd
@@ -13,7 +13,7 @@ Colortema.txt::TextFile/TextFile::-1::1742566071::0::1::::<><><>0<>0<><>::
 confirmation_dialog.gd::GDScript/GDScript::1519405577906294694::1741551160::0::1::::<>Control<><>0<>0<><>::
 confirmation_dialog.tscn::PackedScene/PackedScene::1999738551979144371::1741554865::0::1::::<><><>0<>0<><>::res://confirmation_dialog.gd
 default_bus_layout.tres::AudioBusLayout/AudioBusLayout::-1::1741572726::0::1::::<><><>0<>0<><>::
-default_env.tres::Environment::5050858207774764419::1769745841::0::1::::<><><>0<>0<><>::
+default_env.tres::Environment::5050858207774764419::1769746805::0::1::::<><><>0<>0<><>::
 distribution_panel.gd::GDScript::7836725932550080730::1769745585::0::1::::<>Panel<><>0<>0<><>::
 export_presets.cfg::TextFile::-1::1769600427::0::1::::<><><>0<>0<><>::
 fixed_region.gd::GDScript/GDScript::1939468925318145972::1741493852::0::1::::<>Node2D<><>0<>0<><>::
@@ -22,7 +22,7 @@ icon.svg::CompressedTexture2D/CompressedTexture2D::6138794862060375574::17415743
 main.gd::GDScript::44411787391875915::1769704981::0::1::::<>Node2D<><>0<>0<><>::
 main.tscn::PackedScene::4773875983973314485::1742962194::0::1::::<><><>0<>0<><>::uid://vrpqy4dma56::::res://main.gd<>uid://djwfy4hc453bi::::res://distribution_panel.gd<>uid://r1pqgjf0kunk::::res://Image/Campo/traditional_Japanese.jpg
 main_battle_animation.gd::GDScript/GDScript::2434731481729634716::1741607985::0::1::::<>Node<><>0<>0<><>::
-menu.tscn::PackedScene::7796813908259212624::1742962194::0::1::::<><><>0<>0<><>::uid://bxkcox53cf3l6::::res://simple_menu.gd<>uid://csbibnpmc81it::::res://Image/menu/Menu.png
+menu.tscn::PackedScene::7796813908259212624::1769746806::0::1::::<><><>0<>0<><>::uid://bxkcox53cf3l6::::res://simple_menu.gd<>uid://csbibnpmc81it::::res://Image/menu/Menu_.png
 menu_diagnostic.gd::GDScript/GDScript::3468730670925821226::1741574240::0::1::::<>Node<><>0<>0<><>::
 neon_env.tres::Environment::-1::1769644054::0::1::::<><><>0<>0<><>::
 README.md::TextFile/TextFile::-1::1741490793::0::1::::<><><>0<>0<><>::
@@ -31,7 +31,7 @@ region.tscn::PackedScene::4440556765867217942::1742962195::0::1::::<><><>0<>0<><
 simple_menu.gd::GDScript/GDScript::4021555555664924749::1741572775::0::1::::<>Control<><>0<>0<><>::
 simple_menu.tscn::PackedScene/PackedScene::-1::1769644989::0::1::::<><><>0<>0<><>::
 unit.gd::GDScript::7380601562729409155::1769745450::0::1::::<>Node2D<><>0<>0<><>::
-unit.tscn::PackedScene::5230725665883982816::1769741576::0::1::::<><><>0<>0<><>::uid://ddfhoun405a6f::::res://unit.gd<>res://Image/Cards/Neon/frame_0.png<>res://Image/Cards/Neon/Front.png<>uid://bsbwqpxmuumr8::::res://Image/Font/dogicapixel.ttf
+unit.tscn::PackedScene::5230725665883982816::1769746378::0::1::::<><><>0<>0<><>::uid://ddfhoun405a6f::::res://unit.gd<>res://Image/Cards/Neon/frame_0.png<>res://Image/Cards/Neon/Front.png<>uid://bsbwqpxmuumr8::::res://Image/Font/dogicapixel.ttf
 user_manager.gd::GDScript/GDScript::1798799408107885407::1741495890::0::1::::<>Node<><>0<>0<><>::
 ::res://Image/::1742556337
 ::res://Image/Campo/::1742953638
@@ -67,7 +67,7 @@ frame_21.png::CompressedTexture2D/CompressedTexture2D::5233805653805225425::1741
 frame_22.png::CompressedTexture2D/CompressedTexture2D::3980297073470333085::1741490510::1741747077::1::::<><><>0<>0<>d67093e4cf58cce01e0c0b27635c73f4<>res://.godot/imported/frame_22.png-e1c0f7780a6d4018a621228568a434fe.ctex::
 frame_23.png::CompressedTexture2D/CompressedTexture2D::2375812690507476922::1741490510::1741747077::1::::<><><>0<>0<>c03686c03386707d81675ae7fd4a9bcf<>res://.godot/imported/frame_23.png-337cd6083c66a6b8ef8f961725d9e32c.ctex::
 Front.png::CompressedTexture2D/CompressedTexture2D::6408263697829418688::1742555877::1742555881::1::::<><><>0<>0<>0fc035b3a80bae6e1dbc59fbc455fed8<>res://.godot/imported/Front.png-cbd095404f6a14627857f42880184435.ctex::
-::res://Image/Cards/Neon/::1769744577
+::res://Image/Cards/Neon/::1769745978
 Daimyo.png::CompressedTexture2D::3134568883198796496::1769647641::1769647752::1::::<><><>0<>0<>53d82e4830f72ef243e679a9e60e26d9<>res://.godot/imported/Daimyo.png-a3db851ddf9c77fc2bb805b630c554c9.ctex::
 frame_0.png::CompressedTexture2D::4755260128753017225::1769647328::1769644330::1::::<><><>0<>0<>9803d072d203dd7990e143dbb61e5e52<>res://.godot/imported/frame_0.png-81d3a51fd3157baed82513427dcd28aa.ctex::
 frame_1.png::CompressedTexture2D::7373348082189434280::1769647328::1769644330::1::::<><><>0<>0<>88b75750f3e947f9d8bbf7aa44e9401b<>res://.godot/imported/frame_1.png-c5d5d05793f13f04e8fdbff3d1d45dae.ctex::
@@ -103,9 +103,9 @@ Samurai.png::CompressedTexture2D::9152218084572335255::1769647334::1769647813::1
 ::res://Image/Cards/Ofudas/::1741739723
 ::res://Image/Font/::1742556347
 dogicapixel.ttf::FontFile/FontFile::3653249417428590387::1742556346::1742556347::1::::<><><>0<>0<>74af4b1d671a0acd8edcf7e3dd7e83b2<>res://.godot/imported/dogicapixel.ttf-28be62ee84a5b10b44c8028ca6a4b65e.fontdata::
-::res://Image/menu/::1769647910
-CyberMenu.png::CompressedTexture2D::6003172505005764201::1769647352::1769647910::1::::<><><>0<>0<>2e45a3efc373d8625508fb5fbbe2614c<>res://.godot/imported/CyberMenu.png-38b59d6ec5fb05a11cc340d8586dc9d0.ctex::
-Menu.png::CompressedTexture2D/CompressedTexture2D::6038793158885724659::1741554517::1741554550::1::::<><><>0<>0<>42334cffbf889317163afba26ce61060<>res://.godot/imported/Menu.png-38e2520a272ece4e6e1d574e889d1c59.ctex::
+::res://Image/menu/::1769746816
+Menu.png::CompressedTexture2D::6003172505005764201::1769647352::1769746817::1::::<><><>0<>0<>0fdc9743d3c9cbea57a98f0865f52a98<>res://.godot/imported/Menu.png-38e2520a272ece4e6e1d574e889d1c59.ctex::
+Menu_.png::CompressedTexture2D::6038793158885724659::1741554517::1769746807::1::::<><><>0<>0<>adb4e6c34eea453e1cbe0100c60fdaf3<>res://.godot/imported/Menu_.png-5825a7e8ed4624a00f7c54ebe19a4b2f.ctex::
 ::res://Music/::1741571762
 ::res://Music/Efects/::1741572726
 BURNHEAD.WAV::AudioStreamWAV/AudioStreamWAV::6444795380958068300::1736095178::1741572726::1::::<><><>0<>0<>65756e60d55368e9d6232f49cb5b5144<>res://.godot/imported/BURNHEAD.WAV-1b86d8d317b1ee00bb68be27caa0afbf.sample::
