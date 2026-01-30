@@ -12,7 +12,7 @@ var unit_scene = preload("res://unit.tscn")
 
 # Configurações para o layout em linha
 const CARD_SPACING = 12.0       # Espaçamento maior entre as cartas maiores
-const CARD_BASE_SCALE = 1.0     # Cartas em tamanho normal (escala 1.0)
+const CARD_BASE_SCALE = 0.5     # Cartas em tamanho normal (escala 0.5)
 const CARD_HOVER_SCALE = 1.3    # Escala aumentada quando passar o mouse sobre a carta
 const CARD_ELEVATION = 20.0     # Elevação maior quando selecionadas
 

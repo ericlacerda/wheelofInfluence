@@ -19,7 +19,7 @@ var unit_scene = preload("res://unit.tscn")
 # Configurações para as cartas
 const MAX_VISIBLE_CARDS = 12        # Aumentado para mostrar mais cartas
 const CARD_SPACING_Y = 15           # Espaçamento vertical entre cartas (altura da área de ataque/defesa)
-const CARD_SCALE = 0.7              # Escala das cartas na região (aumentada de 0.3 para 0.4)
+const CARD_SCALE = 0.5              # Escala das cartas na região (reduzida para 0.5 para igualar a mão)
 const CARD_WIDTH = 70.0             # Largura de uma carta (em pixels)
 const CARD_HEIGHT = 105.0           # Altura de uma carta (em pixels)
 const MIN_REGION_SIZE = 14.0        # Tamanho mínimo da região (sem cartas) - metade da largura da carta

@@ -52,9 +52,9 @@ texture = ExtResource("2_davkp")
 [node name="AttackBox" type="ColorRect" parent="Card"]
 layout_mode = 0
 offset_left = 5.0
-offset_top = 2.5
-offset_right = 15.0
-offset_bottom = 12.5
+offset_top = 78.0
+offset_right = 29.0
+offset_bottom = 102.0
 mouse_filter = 2
 color = Color(3, 0.2, 0.2, 1)
 
@@ -65,7 +65,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 14
 text = "5"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -73,10 +73,11 @@ vertical_alignment = 1
 [node name="TitleLabel" type="Label" parent="Card"]
 modulate = Color(0, 0, 0, 1)
 layout_mode = 0
-offset_left = 15.0
-offset_right = 72.0
-offset_bottom = 16.0
-scale = Vector2(0.719999, 1)
+offset_left = 5.0
+offset_top = 8.0
+offset_right = 65.0
+offset_bottom = 24.0
+scale = Vector2(1, 1)
 theme_override_font_sizes/font_size = 9
 text = "Cavaleiro"
 label_settings = SubResource("LabelSettings_5wnup")
@@ -87,12 +88,12 @@ clip_text = true
 
 [node name="DefenseBox" type="ColorRect" parent="Card"]
 layout_mode = 0
-offset_left = 56.0
-offset_top = 2.5
-offset_right = 66.0
-offset_bottom = 12.5
+offset_left = 41.0
+offset_top = 78.0
+offset_right = 65.0
+offset_bottom = 102.0
 mouse_filter = 2
-color = Color(0.1, 1.2, 2.0, 1)
+color = Color(0.0, 0.3, 0.4, 1)
 
 [node name="DefenseLabel" type="Label" parent="Card/DefenseBox"]
 layout_mode = 1
@@ -101,7 +102,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 14
 text = "3"
 horizontal_alignment = 1
 vertical_alignment = 1

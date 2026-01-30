@@ -37,7 +37,7 @@ func _ready():
 	
 	# Definir a escala inicial da carta
 	if not in_distribution_panel:
-		scale = Vector2(0.4, 0.4)  # Escala 0.4 resulta em 28px de largura (70px * 0.4)
+		scale = Vector2(0.5, 0.5)  # Escala 0.4 resulta em 28px de largura (70px * 0.4)
 	
 	# Monitorar eventos de input
 	set_process_input(true)
@@ -154,7 +154,7 @@ func set_in_distribution_panel(in_panel: bool):
 		pass
 	else:
 		# Se não estiver no painel de distribuição, usar a escala padrão para regiões
-		scale = Vector2(0.4, 0.4)
+		scale = Vector2(0.5, 0.5)
 
 # Define o jogador proprietário da unidade
 func set_player(player_number):
@@ -166,13 +166,13 @@ func update_card():
 	# Estatísticas
 	if attack_label:
 		attack_label.text = str(attack)
-		# Electric Crimson #FF0055
-		attack_label.add_theme_color_override("font_color", Color("#FF0055"))
+		# Usar Branco para contraste, já que o fundo é Vermelho
+		attack_label.add_theme_color_override("font_color", Color.WHITE)
 		
 	if defense_label:
 		defense_label.text = str(defense)
-		# Cyan Frost #00F0FF
-		defense_label.add_theme_color_override("font_color", Color("#00F0FF"))
+		# Usar Branco para contraste, já que o fundo é Azul
+		defense_label.add_theme_color_override("font_color", Color.WHITE)
 
 	# Garantir que os rótulos estáticos "ATK" e "DEF" estejam visíveis
 	var stat_labels = $Card/StatLabels

@@ -1,4 +1,5 @@
 res://default_env.tres
-res://distribution_panel.gd
 res://unit.gd
-res://main.gd
+res://unit.tscn
+res://distribution_panel.gd
+res://region.gd
